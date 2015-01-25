@@ -13,8 +13,8 @@ default: &default
   adapter: mysql2
   encoding: utf8
   pool: 5
-  username: root
-  password:
+  username: branford_station
+  password: <%= ENV['BRANFORD_STATION_DATABASE_PASSWORD'] %>
   socket: /tmp/mysql.sock
 
 development:
@@ -50,5 +50,3 @@ test:
 production:
   <<: *default
   database: branford_station_production
-  username: branford_station
-  password: <%= ENV['BRANFORD_STATION_DATABASE_PASSWORD'] %>
