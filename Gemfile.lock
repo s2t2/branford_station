@@ -161,6 +161,7 @@ DEPENDENCIES
   jbuilder (~> 2.0)
   jquery-rails
   mysql2
+  nokogiri
   pry
   rails (= 4.2.0)
   rspec-rails (~> 3.0)
