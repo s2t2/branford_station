@@ -3,6 +3,7 @@ class CreateGoogleTransitDataFeedPublicFeeds < ActiveRecord::Migration
     create_table :google_transit_data_feed_public_feeds do |t|
       t.integer :agency_id #, :null => false
       t.string :url #, :null => false
+      t.string :name
       t.text :notes
       t.timestamps null: false
     end
