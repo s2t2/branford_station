@@ -11,10 +11,16 @@ bundle exec rake db:create
 bundle exec rake db:migrate
 ```
 
-Extract and load all agencies known to the [GTFS Data Exchange](http://www.gtfs-data-exchange.com/).
+Extract and load all agencies from the [GTFS Data Exchange](http://www.gtfs-data-exchange.com/) API.
 
 ``` sh
-bundle exec rake station_attendant:extract_and_load_data_exchange_agencies
+bundle exec rake station_attendant:extract_from_data_exchange
+```
+
+Extract and load all agencies and feeds from the [Google Transit Data Feed](https://code.google.com/p/googletransitdatafeed/wiki/PublicFeeds) wiki.
+
+``` sh
+bundle exec rake station_attendant:extract_from_google_transit_data_feed
 ```
 
 ## Contributing

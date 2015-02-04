@@ -14,6 +14,7 @@ gem 'sdoc', '~> 0.4.0', group: :doc # bundle exec rake doc:rails generates the A
 # gem 'unicorn' # Use Unicorn as the app server
 # gem 'capistrano-rails', group: :development # Use Capistrano for deployment
 gem 'gtfs-data_exchange'
+gem 'nokogiri'
 
 group :development, :test do
   # gem 'byebug' # Call 'byebug' anywhere in the code to stop execution and get a debugger console

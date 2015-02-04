@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150125213249) do
+ActiveRecord::Schema.define(version: 20150131052943) do
 
   create_table "data_exchange_agencies", force: :cascade do |t|
     t.string   "dataexchange_id",   limit: 255, null: false
@@ -31,5 +31,24 @@ ActiveRecord::Schema.define(version: 20150125213249) do
   end
 
   add_index "data_exchange_agencies", ["dataexchange_id"], name: "index_data_exchange_agencies_on_dataexchange_id", unique: true, using: :btree
+
+  create_table "google_transit_data_feed_public_feed_agencies", force: :cascade do |t|
+    t.string   "url",        limit: 255
+    t.string   "name",       limit: 255
+    t.string   "area",       limit: 255
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+  end
+
+  create_table "google_transit_data_feed_public_feeds", force: :cascade do |t|
+    t.integer  "agency_id",  limit: 4
+    t.string   "url",        limit: 255
+    t.string   "name",       limit: 255
+    t.text     "notes",      limit: 65535
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
+  end
+
+  add_index "google_transit_data_feed_public_feeds", ["agency_id"], name: "index_google_transit_data_feed_public_feeds_on_agency_id", using: :btree
 
 end
