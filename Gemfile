@@ -13,8 +13,10 @@ gem 'sdoc', '~> 0.4.0', group: :doc # bundle exec rake doc:rails generates the A
 # gem 'bcrypt', '~> 3.1.7' # Use ActiveModel has_secure_password
 # gem 'unicorn' # Use Unicorn as the app server
 # gem 'capistrano-rails', group: :development # Use Capistrano for deployment
-gem 'gtfs-data_exchange'
+gem 'gtfs-data_exchange' #, :git => "https://github.com/data-creative/gtfs-data-exchange-api-ruby/", :branch => "0.1.0"
 gem 'nokogiri'
+gem 'rubyzip', '~> 1.1' #, require: 'zip'
+#gem 'gtfs-meta', :git => "https://github.com/data-creative/gtfs-meta/", :branch => "0.1.0"
 
 group :development, :test do
   # gem 'byebug' # Call 'byebug' anywhere in the code to stop execution and get a debugger console
