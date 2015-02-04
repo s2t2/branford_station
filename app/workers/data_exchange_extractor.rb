@@ -6,7 +6,7 @@ class DataExchangeExtractor
 
   def self.perform
     data_exchange_agencies = GTFS::DataExchange::API.agencies
-    data_exchange_agencies.each_with_index do |extracted_agency, i|
+    data_exchange_agencies.each do |extracted_agency|
       unless extracted_agency[:dataexchange_id]
         puts "Agency #{extracted_agency[:name]} is missing an identifier."
         next
