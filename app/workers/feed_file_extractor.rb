@@ -1,6 +1,6 @@
 require 'zip'
 
-class FeedManager
+class FeedFileExtractor
   GTFS_DATA_DIRECTORY = "db/gtfs"
 
   FEED_FILE_NAMES = ["agency.txt", "stops.txt", "routes.txt", "trips.txt", "stop_times.txt",
@@ -8,16 +8,31 @@ class FeedManager
     "fare_rules.txt", "frequencies.txt", "transfers.txt"
   ]
 
-  def self.perform(source_urls)
+  # Extract feed files from source.
+  #
+  # @examples
+  #    FeedFileExtractor.perform(:source_urls => ["http://www.shorelineeast.com/google_transit.zip", "http://web.mta.info/developers/data/mnr/google_transit.zip"])
+  #    FeedFileExtractor.perform
+  #
+  # @param [Hash] options
+  # @option options [Array] :source_urls ([])
+  #
+  def self.perform(options = {})
+    source_urls = options[:source_urls] || []
+    source_urls += DataExchangeAgency.pluck(:feed_baseurl)
+    source_urls += GoogleTransitDataFeedPublicFeed.pluck(:url)
+    source_urls = source_urls.compact.uniq.select{|url| url.ends_with?(".zip")}
+
+    puts "EXTRACTING FEED FILES FROM #{source_urls.length} SOURCES"
+
     source_urls.each do |source_url|
       next unless source_url.ends_with?(".zip")
-
       begin
 
-        # Check feed version.
+        # Check/validate feed version.
 
         uri = URI.parse(source_url)
-        next unless url.scheme == "http"
+        next unless uri.scheme == "http"
         next unless uri.host
 
         response = Net::HTTP.get_response(uri)
@@ -31,9 +46,9 @@ class FeedManager
 
         # Create a local directory for storing feed files.
 
-        destination_path = "#{GTFS_DATA_DIRECTORY}/hosts/#{uri.host}/feeds/#{uri.path.gsub("/","-").slice(1..-1)}/versions/#{last_modified_at.to_s}"
+        destination_path = "#{GTFS_DATA_DIRECTORY}/hosts/#{uri.host}/feeds/#{uri.path.gsub("/","--").slice(1..-1)}/versions/#{last_modified_at.to_s}"
 
-        pp destination_path
+        puts "FEED FILE DESTINATION -- #{destination_path}"
 
         FileUtils.mkdir_p(destination_path)
 
@@ -77,6 +92,8 @@ class FeedManager
         puts "#{e.class} -- #{e.message}"
       end
     end
+
+    system "say 'process managed'"
   end
 
   class MissingEtag < StandardError

@@ -8,4 +8,9 @@ namespace :station_attendant do
   task :extract_from_google_transit_data_feed => :environment do
     GoogleTransitDataFeedExtractor.perform
   end
+
+  desc "Extracts feed files from all known sources."
+  task :extract_feed_files => :environment do
+    FeedFileExtractor.perform
+  end
 end

@@ -4,6 +4,16 @@ An [open transit data](https://developers.google.com/transit/gtfs/) client.
 
 ## Usage
 
+### Specified Feed Source(s)
+
+Extract feed files from specified sources.
+
+```` rb
+FeedFileExtractor.perform(:source_urls => ["http://www.shorelineeast.com/google_transit.zip", "http://web.mta.info/developers/data/mnr/google_transit.zip"])
+````
+
+### All Known Feed Source(s)
+
 Set-up the database.
 
 ``` sh
@@ -22,6 +32,13 @@ Extract and load all agencies and feeds from the [Google Transit Data Feed](http
 ``` sh
 bundle exec rake station_attendant:extract_from_google_transit_data_feed
 ```
+
+Extract feed files from all known sources.
+
+``` sh
+bundle exec rake station_attendant:extract_feed_files
+```
+
 
 ## Contributing
 
