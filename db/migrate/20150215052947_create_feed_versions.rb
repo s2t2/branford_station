@@ -12,14 +12,14 @@ class CreateFeedVersions < ActiveRecord::Migration
       t.text :cache_control
       t.text :connection
       t.text :content_type
-      t.text :content_disposition
+      #t.text :content_disposition
       t.text :content_language
       t.text :content_length
       t.datetime :expires
       #t.text :location
       t.text :server
-      t.text :transfer_encoding
-      t.text :vary
+      #t.text :transfer_encoding
+      #t.text :vary
       #t.text :x_aspnet_version
       #t.text :x_frame_options
       t.text :x_powered_by
@@ -32,6 +32,6 @@ class CreateFeedVersions < ActiveRecord::Migration
 
     add_index :feed_versions, :feed_id
     add_index :feed_versions, :last_modified_at
-    #add_index :feed_versions, :last_checked_at
+    add_index :feed_versions, :last_checked_at
   end
 end
