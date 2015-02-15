@@ -131,6 +131,6 @@ class FeedConsumer
       end
     end
 
-    #system "say 'process managed'"
+    system "say 'process managed'" if Rails.env == "development"
   end
 end

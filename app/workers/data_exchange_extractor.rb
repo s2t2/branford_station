@@ -1,11 +1,11 @@
-require 'gtfs/data_exchange'
+require 'gtfs_data_exchange_api'
 
 class DataExchangeExtractor
 
   # Extracts and loads all agencies from the GTFS Data Exchange API.
 
   def self.perform
-    data_exchange_agencies = GTFS::DataExchange::API.agencies
+    data_exchange_agencies = GTFSDataExchangeAPI.agencies
     data_exchange_agencies.each do |extracted_agency|
       unless extracted_agency[:dataexchange_id]
         puts "Agency #{extracted_agency[:name]} is missing an identifier."

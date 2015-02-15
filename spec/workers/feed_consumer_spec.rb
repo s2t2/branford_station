@@ -15,11 +15,11 @@ RSpec.describe FeedConsumer do
       "http://developer.trimet.org/schedule/gtfs.zip"
     ]}
 
-    context "when loading to file system" do
+    context "when choosing a filesystem load strategy" do
       let(:load_strategy){ "filesystem" }
       let(:gtfs_data_directory){ "gtfs" }
 
-      it 'downloads current source from hosted feed' do
+      it 'downloads source files' do
         FeedConsumer.perform({:source_urls => source_urls, :load_strategy => load_strategy})
 
         source_urls.each do |source_url|
@@ -33,12 +33,13 @@ RSpec.describe FeedConsumer do
       end
     end
 
-    #context "when loading to database" do
-    #  let(:load_strategy){ "database" }
+    context "when choosing a database load strategy" do
+      let(:load_strategy){ "database" }
 
-    #  it 'downloads current source from hosted feed' do
-    #    FeedConsumer.perform({:source_urls => source_urls, :load_strategy => load_strategy})
-    #  end
-    #end
+      it 'loads source files into database' do
+        FeedConsumer.perform({:source_urls => source_urls, :load_strategy => load_strategy})
+        true
+      end
+    end
   end
 end
