@@ -9,7 +9,7 @@ An [open transit data](https://developers.google.com/transit/gtfs/) client.
 Extract feed files from specified sources.
 
 ```` rb
-FeedFileExtractor.perform(:source_urls => ["http://www.shorelineeast.com/google_transit.zip", "http://web.mta.info/developers/data/mnr/google_transit.zip"])
+FeedConsumer.perform(:source_urls => ["http://www.shorelineeast.com/google_transit.zip", "http://web.mta.info/developers/data/mnr/google_transit.zip"])
 ````
 
 ### All Known Feed Source(s)
@@ -24,21 +24,20 @@ bundle exec rake db:migrate
 Extract and load all agencies from the [GTFS Data Exchange](http://www.gtfs-data-exchange.com/) API.
 
 ``` sh
-bundle exec rake station_attendant:extract_from_data_exchange
+bundle exec rake station_attendant:find_data_exchange_feeds
 ```
 
 Extract and load all agencies and feeds from the [Google Transit Data Feed](https://code.google.com/p/googletransitdatafeed/wiki/PublicFeeds) wiki.
 
 ``` sh
-bundle exec rake station_attendant:extract_from_google_transit_data_feed
+bundle exec rake station_attendant:find_google_transit_data_feeds
 ```
 
 Extract feed files from all known sources.
 
 ``` sh
-bundle exec rake station_attendant:extract_feed_files
+bundle exec rake station_attendant:consume_feeds
 ```
-
 
 ## Contributing
 

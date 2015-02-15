@@ -53,7 +53,7 @@ class GoogleTransitDataFeedExtractor
       feed_notes_cell = tds[3]
       feed_notes = feed_notes_cell.content
 
-      pp tr.content
+      pp tr.content.strip
 
       # Persist agencies and feeds based on row information.
 

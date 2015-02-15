@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150131052943) do
+ActiveRecord::Schema.define(version: 20150215052947) do
 
   create_table "data_exchange_agencies", force: :cascade do |t|
     t.string   "dataexchange_id",   limit: 255, null: false
@@ -31,6 +31,53 @@ ActiveRecord::Schema.define(version: 20150131052943) do
   end
 
   add_index "data_exchange_agencies", ["dataexchange_id"], name: "index_data_exchange_agencies_on_dataexchange_id", unique: true, using: :btree
+
+  create_table "feed_hosts", force: :cascade do |t|
+    t.string   "name",       limit: 255, null: false
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+  end
+
+  add_index "feed_hosts", ["name"], name: "index_feed_hosts_on_name", unique: true, using: :btree
+
+  create_table "feed_versions", force: :cascade do |t|
+    t.integer  "feed_id",             limit: 4,     null: false
+    t.datetime "last_modified_at",                  null: false
+    t.text     "etag",                limit: 65535
+    t.integer  "response_code",       limit: 4
+    t.string   "response_message",    limit: 255
+    t.text     "accept_ranges",       limit: 65535
+    t.text     "cache_control",       limit: 65535
+    t.text     "connection",          limit: 65535
+    t.text     "content_type",        limit: 65535
+    t.text     "content_disposition", limit: 65535
+    t.text     "content_language",    limit: 65535
+    t.text     "content_length",      limit: 65535
+    t.datetime "expires"
+    t.text     "location",            limit: 65535
+    t.text     "server",              limit: 65535
+    t.text     "transfer_encoding",   limit: 65535
+    t.text     "vary",                limit: 65535
+    t.text     "x_powered_by",        limit: 65535
+    t.text     "set_cookie",          limit: 65535
+    t.datetime "last_checked_at"
+    t.datetime "created_at",                        null: false
+    t.datetime "updated_at",                        null: false
+  end
+
+  add_index "feed_versions", ["feed_id"], name: "index_feed_versions_on_feed_id", using: :btree
+  add_index "feed_versions", ["last_modified_at"], name: "index_feed_versions_on_last_modified_at", using: :btree
+
+  create_table "feeds", force: :cascade do |t|
+    t.integer  "host_id",    limit: 4,   null: false
+    t.string   "source_url", limit: 255, null: false
+    t.string   "name",       limit: 255
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+  end
+
+  add_index "feeds", ["host_id"], name: "index_feeds_on_host_id", using: :btree
+  add_index "feeds", ["source_url"], name: "index_feeds_on_source_url", unique: true, using: :btree
 
   create_table "google_transit_data_feed_public_feed_agencies", force: :cascade do |t|
     t.string   "url",        limit: 255

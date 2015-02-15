@@ -1,0 +1,2 @@
+class FeedVersionsController < ApplicationController
+end
