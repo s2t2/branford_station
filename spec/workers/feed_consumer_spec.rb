@@ -19,7 +19,7 @@ RSpec.describe FeedConsumer do
       let(:load_strategy){ "filesystem" }
       let(:gtfs_data_directory){ "gtfs" }
 
-      it 'downloads source files' do
+      it 'downloads feed files from source' do
         FeedConsumer.perform({:source_urls => source_urls, :load_strategy => load_strategy})
 
         source_urls.each do |source_url|
@@ -28,7 +28,7 @@ RSpec.describe FeedConsumer do
           feed_name = uri.path.split("/").last
           feed_versions_path = "#{gtfs_data_directory}/hosts/#{feed_host_name}/feeds/#{feed_name}/versions"
           expect(Dir.exists?(feed_versions_path)).to be_truthy
-          expect(Dir.entries(feed_versions_path).size).to be_greater_than 0
+          expect(Dir.entries(feed_versions_path).size).to be > 0
         end
       end
     end
@@ -36,7 +36,7 @@ RSpec.describe FeedConsumer do
     context "when choosing a database load strategy" do
       let(:load_strategy){ "database" }
 
-      it 'loads source files into database' do
+      it 'loads feed file contents into database' do
         FeedConsumer.perform({:source_urls => source_urls, :load_strategy => load_strategy})
         true
       end
