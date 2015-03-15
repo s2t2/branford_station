@@ -1,49 +1,50 @@
-# BranfordStation
+# Branford Station
 
-An [open transit data](https://developers.google.com/transit/gtfs/) client.
+A [General Transit Feed Specification (GTFS)](https://developers.google.com/transit/gtfs/) data client.
 
-## Usage
+This application
+ finds sources of GTFS data,
+ consumes GTFS data from source,
+ and displays the resulting transit information to the general public through a web interface.
 
-### Specified Feed Source(s)
+## General Usage
 
-Extract feed files from specified sources.
+View live at [next-train.info](http://next-train.info).
+
+Find participating transit agencies: http://next-train.info/agencies.
+
+Find all train stations serviced by a given agency: http://next-train.info/agencies/SLE/stations.
+
+Find the upcoming schedule of departures for a given station: http://next-train.info/agencies/SLE/stations/BNF.
+
+## Developer Usage
+
+Find sources of GTFS Data from community sites including
+ the [GTFS Data Exchange](http://www.gtfs-data-exchange.com/)
+ and the [Google Transit Data Feed - Public Feeds Wiki](https://code.google.com/p/googletransitdatafeed/wiki/PublicFeeds).
+
+```` sh
+bundle exec rake station_attendant:find_data_exchange_feeds
+bundle exec rake station_attendant:find_google_transit_data_feeds
+````
+
+Consume GTFS data from all known sources, or specify one or more feed source locations for ad-hoc consumtion.
+``` sh
+bundle exec rake station_attendant:consume_feeds
+```
 
 ```` rb
 FeedConsumer.perform(:source_urls => ["http://www.shorelineeast.com/google_transit.zip", "http://web.mta.info/developers/data/mnr/google_transit.zip"])
 ````
 
-### All Known Feed Source(s)
-
-Set-up the database.
-
-``` sh
-bundle exec rake db:create
-bundle exec rake db:migrate
-```
-
-Extract and load all agencies from the [GTFS Data Exchange](http://www.gtfs-data-exchange.com/) API.
-
-``` sh
-bundle exec rake station_attendant:find_data_exchange_feeds
-```
-
-Extract and load all agencies and feeds from the [Google Transit Data Feed](https://code.google.com/p/googletransitdatafeed/wiki/PublicFeeds) wiki.
-
-``` sh
-bundle exec rake station_attendant:find_google_transit_data_feeds
-```
-
-Extract feed files from all known sources.
-
-``` sh
-bundle exec rake station_attendant:consume_feeds
-```
-
 ## Contributing
 
-0. Create a [new issue](https://github.com/s2t2/branford_station/issues/new), discussing desired changes (optional).
-1. [Fork](https://github.com/s2t2/branford_station/fork) the repository.
-2. Make changes.
-3. Test changes and write tests, if possible, else describe desired testing logic in an issue or pull request comment. Run tests with `bundle exec rspec spec/`.
-4. Push changes.
-5. Create a [new pull request](https://github.com/s2t2/branford_station/compare/), discussing changes as applicable.
+Issues and Pull Requests are welcome.
+
+### Development Environment
+
+Install dependencies for a Ruby on Rails application.
+
+### Production Environment
+
+Optionally use [this script](https://github.com/s2t2/trailmix-solo) to deploy the application to a remote, hosted server.

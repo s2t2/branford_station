@@ -5,6 +5,8 @@ Rails.application.routes.draw do
 
   resources :feed_hosts
 
+  #get 'agencies/:agency_abbreviation/stations/:station_abbreviation'
+
   # root 'feed_entries#index'
 
   # The priority is based upon order of creation: first created -> highest priority.
