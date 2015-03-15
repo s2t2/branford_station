@@ -1,25 +1,27 @@
 # Branford Station
 
-A tool for consuming open transit data published according to the [General Transit Feed Specification (GTFS)](https://developers.google.com/transit/gtfs/).
+A tool for consuming and presenting open transit data published according to the [General Transit Feed Specification (GTFS)](https://developers.google.com/transit/gtfs/).
 
 This application
- finds known sources of GTFS data,
- consumes GTFS data from known sources,
- and communicates the resulting transit information to the general public through a web interface.
+ finds all known sources of GTFS data,
+ consumes GTFS data from source,
+ and presents GTFS data to the public through a web interface.
 
-## General Usage
+## General Usage (Presentation)
 
 View live at [next-train.info](http://next-train.info).
 
-Visit http://next-train.info/agencies to find participating transit agencies.
+### API Endpoints
 
-Visit http://next-train.info/agencies/SLE to find all train stations serviced by a given agency, in this case *Shore Line East (SLE)*.
+ + **/agencies** (lists all participating transit agencies)
+ + **/agencies/`:agency_abbrev`** (lists all train stations serviced by a given agency)
+ + **/agencies/`:agency_abbrev`/stations/`:station_abbrev`** (lists upcoming departures from a given station)
 
-Visit http://next-train.info/agencies/SLE/stations/BNF to find the upcoming schedule of departures for a given station, in this case *Branford (BNF)*.
+These endpoints return HTML by default. To request a JSON response instead, suffix `.json` to the endpoint url.
 
-## Developer Usage
+## Developer Usage (Consumption)
 
-### Ad-hoc
+### Ad-hoc Feed Consumption
 
 Specify one or more feed source urls for ad-hoc consumption.
 ```` rb
@@ -29,18 +31,21 @@ FeedConsumer.perform(:source_urls => [
 ])
 ````
 
-### Systematic
+### Systematic Feed Discovery and Consumption
 
-Find all known sources of GTFS Data from community sites including
- the [GTFS Data Exchange](http://www.gtfs-data-exchange.com/)
- and the [Google Transit Data Feed - Public Feeds Wiki](https://code.google.com/p/googletransitdatafeed/wiki/PublicFeeds).
+Find all known sources of GTFS Data from community sites.
 
+Find feeds from the [GTFS Data Exchange](http://www.gtfs-data-exchange.com/).
 ```` sh
 bundle exec rake station_attendant:find_data_exchange_feeds
+````
+
+Find feeds from the [Google Transit Data Feed - Public Feeds Wiki](https://code.google.com/p/googletransitdatafeed/wiki/PublicFeeds).
+```` sh
 bundle exec rake station_attendant:find_google_transit_data_feeds
 ````
 
-Consume GTFS data from those sources.
+Consume GTFS data from all known feed sources.
 ``` sh
 bundle exec rake station_attendant:consume_feeds
 ```
