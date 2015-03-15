@@ -1,21 +1,24 @@
 # Branford Station
 
-A [General Transit Feed Specification (GTFS)](https://developers.google.com/transit/gtfs/) data client.
+An open transit data client using the [General Transit Feed Specification (GTFS)](https://developers.google.com/transit/gtfs/).
 
 This application
- finds sources of GTFS data,
- consumes GTFS data from source,
- and displays the resulting transit information to the general public through a web interface.
+ finds known sources of GTFS data,
+ consumes GTFS data from known sources,
+ and communicates the resulting transit information to the general public through a web interface.
 
 ## General Usage
 
 View live at [next-train.info](http://next-train.info).
 
-Find participating transit agencies: http://next-train.info/agencies.
+Find participating transit agencies.
+ > http://next-train.info/agencies
 
-Find all train stations serviced by a given agency: http://next-train.info/agencies/SLE/stations.
+Find all train stations serviced by a given agency, in this case *Shore Line East (SLE)*.
+ > http://next-train.info/agencies/SLE/stations
 
-Find the upcoming schedule of departures for a given station: http://next-train.info/agencies/SLE/stations/BNF.
+Find the upcoming schedule of departures for a given station, in this case *Branford (BNF)*.
+ > http://next-train.info/agencies/SLE/stations/BNF
 
 ## Developer Usage
 
