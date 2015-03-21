@@ -25,10 +25,13 @@ These endpoints return HTML by default. To request a JSON response instead, suff
 
 Specify one or more feed source urls for ad-hoc consumption.
 ```` rb
-FeedConsumer.perform(:source_urls => [
-  "http://www.shorelineeast.com/google_transit.zip",
-  "http://web.mta.info/developers/data/mnr/google_transit.zip"
-])
+FeedConsumer.perform(:source_urls => ["http://www.shorelineeast.com/google_transit.zip", "http://web.mta.info/developers/data/mnr/google_transit.zip"])
+````
+
+By default this will download feed files to your local fylesystem.
+ To load file contents into the database, pass `:load => true` as consumption request options.
+ ```` rb
+FeedConsumer.perform(:source_urls => ["http://www.shorelineeast.com/google_transit.zip", "http://web.mta.info/developers/data/mnr/google_transit.zip"], :load => true)
 ````
 
 ### Systematic Feed Discovery and Consumption

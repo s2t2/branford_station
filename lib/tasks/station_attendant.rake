@@ -18,6 +18,13 @@ namespace :station_attendant do
   task :find_and_consume => :environment do
     DataExchangeExtractor.perform
     GoogleTransitDataFeedExtractor.perform
-    FeedConsumer.perform
+    FeedConsumer.perform(:transit_data_feed => true, :data_exchange => true)
+  end
+
+  desc "Finds feeds and consumes them and loads them."
+  task :find_and_consume_and_load => :environment do
+    DataExchangeExtractor.perform
+    GoogleTransitDataFeedExtractor.perform
+    FeedConsumer.perform(:transit_data_feed => true, :data_exchange => true, :load => true)
   end
 end

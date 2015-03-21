@@ -1,11 +1,14 @@
 class AgenciesController < ApplicationController
   #Lists all transit agencies.
   def index
-    #todo
+    @agencies = Agency.all.order("name")
   end
 
   #Lists all train stations serviced by a given agency.
   def show
-    #todo
+    agency_abbreviation = params[:agency_abbreviation]
+    raise "UNEXPECTED IDENTIFIER" if agency_abbreviation.include?(";") || agency_abbreviation.class != String
+
+    @agency = Agency.where(:abbreviation => agency_abbreviation)
   end
 end
