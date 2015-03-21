@@ -7,9 +7,7 @@ This application
  consumes GTFS data from source,
  and presents GTFS data to the public through a web interface.
 
-## General Usage (Presentation)
-
-View live at [next-train.info](http://next-train.info).
+##  Usage
 
 ### API Endpoints
 
@@ -18,8 +16,6 @@ View live at [next-train.info](http://next-train.info).
  + **/agencies/`:agency_abbrev`/stations/`:station_abbrev`** (lists upcoming departures from a given station)
 
 These endpoints return HTML by default. To request a JSON response instead, suffix `.json` to the endpoint url.
-
-## Developer Usage (Consumption)
 
 ### Ad-hoc Feed Consumption
 
