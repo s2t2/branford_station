@@ -17,7 +17,7 @@
       <% @agencies.each do |agency| %>
       <tr>
         <th scope="row"><%= agency.id %></th>
-        <td><%= agency.name %></td>
+        <td><%= agency.name %> <%= link_to agency.url, :title => "Visit agency website at #{agency.url}" do %><i class="fa fa-external-link"></i><% end %></td>
         <td><%= link_to agency.url %></td>
         <td><%= agency.timezone %></td>
         <td><%= agency.lang %></td>
