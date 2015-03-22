@@ -1,7 +1,7 @@
 class AgenciesController < ApplicationController
   #Lists all transit agencies.
   def index
-    @agencies = Agency.all.order("name")
+    @agencies = Agency.all #.order("host_name").order("feed_name").order("name")
   end
 
   #Lists all train stations serviced by a given agency.
