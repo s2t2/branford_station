@@ -9,6 +9,7 @@ class AgenciesController < ApplicationController
     agency_abbreviation = params[:agency_abbreviation]
     raise "UNEXPECTED IDENTIFIER" if agency_abbreviation.include?(";") || agency_abbreviation.class != String
 
+    binding.pry
     @agency = Agency.where(:abbreviation => agency_abbreviation)
   end
 end

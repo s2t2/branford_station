@@ -1,13 +1,16 @@
 Rails.application.routes.draw do
-  #resources :feed_versions
-  #resources :feeds
-  #resources :feed_hosts
 
   get 'agencies' => 'agencies#index', :as => 'agencies'
   get 'agencies/:agency_abbreviation/' => 'agencies#show', :as => 'agency'
   get 'agencies/:agency_abbreviation/stations/:station_abbreviation'  => 'stations#show', :as => 'station'
 
-  root 'agencies#index'
+  get 'hosts' => 'feed_hosts#index', :as => 'hosts'
+  get 'hosts/:id' => 'feed_hosts#show', :as => 'host'
+
+  #get 'feeds' => 'feeds#index', :as => 'feeds'
+  get 'feeds/:id' => 'feeds#show', :as => 'feed'
+
+  root 'feed_hosts#index'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

@@ -1,0 +1,28 @@
+<div class="table-responsive">
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <!--th>Identifier</th-->
+        <th>Name</th>
+        <th>Timezone</th>
+        <th>Language</th>
+        <th>Phone</th>
+        <!--th>Fare Url</th-->
+        <th>&nbsp;</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% agencies.each do |agency| %>
+      <tr>
+        <!--td><%#= link_to "Agency ##{agency.id}", agency_path(agency) %></td-->
+        <td><%= link_to agency.name, agency_path(agency) %></td>
+        <td><%= agency.timezone %></td>
+        <td><%= agency.lang %></td>
+        <td><%= agency.phone %></td>
+        <!--td><%#= agency.fare_url %></td-->
+        <td><%= link_to agency.url, :title => "Visit agency website at #{agency.url}" do %><i class="fa fa-external-link"></i><% end %></td>
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

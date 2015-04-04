@@ -1,0 +1,5 @@
+<ol class="breadcrumb">
+  <li class="active"><%= link_to "Hosts", hosts_path %></li>
+</ol>
+
+<%= render :partial => "summary_table", :locals => {:hosts => @hosts} %>

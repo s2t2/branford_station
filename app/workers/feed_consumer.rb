@@ -43,7 +43,7 @@ class FeedConsumer
         puts uri
 
         next unless feed_host_name && feed_name
-        feed_host = FeedHost.where(:name => feed_host_name).first_or_create
+        feed_host = FeedHost.where(:name => feed_host_name).first_or_create # todo maybe store the feed_host_name as feed.url instead of feed_name as feed.name ...
         feed = Feed.where(
           :source_url => source_url,
           :host_id => feed_host.id

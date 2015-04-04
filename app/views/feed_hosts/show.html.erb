@@ -1,0 +1,12 @@
+<ol class="breadcrumb">
+  <li><%= link_to "Hosts", hosts_path %></li>
+  <li class="active"><%= link_to @host.name, host_path(@host) %></li>
+</ol>
+
+<h3><%= "Host Summary"%></h3>
+
+<%= render :partial => "summary_table", :locals => {:hosts => [@host]} %>
+
+<h3><%= "Hosted Feeds"%></h3>
+
+<%= render :partial => "feeds/summary_table", :locals => {:feeds => @host.feeds} %>
