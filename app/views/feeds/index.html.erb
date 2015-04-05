@@ -1,0 +1,7 @@
+<ol class="breadcrumb">
+  <li class="active"><%= link_to "Feeds", feeds_path %></li>
+</ol>
+
+<h3><%= "Feed Summary"%></h3>
+
+<%= render :partial => "summary_table", :locals => {:feeds => @feeds} %>

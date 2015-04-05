@@ -10,7 +10,7 @@ class Feed < ActiveRecord::Base
   end
 
   def last_modified_at
-    latest_version.last_modified_at
+    latest_version.try(:last_modified_at)
   end
 
   def most_recently_checked_version
@@ -18,7 +18,7 @@ class Feed < ActiveRecord::Base
   end
 
   def last_checked_at
-    most_recently_checked_version.last_checked_at
+    most_recently_checked_version.try(:last_checked_at)
   end
 
   def agency_names

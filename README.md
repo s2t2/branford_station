@@ -9,14 +9,6 @@ This application
 
 ##  Usage
 
-### API Endpoints
-
- + **/agencies** (lists all participating transit agencies)
- + **/agencies/`:agency_abbrev`** (lists all train stations serviced by a given agency)
- + **/agencies/`:agency_abbrev`/stations/`:station_abbrev`** (lists upcoming departures from a given station)
-
-These endpoints return HTML by default. To request a JSON response instead, suffix `.json` to the endpoint url.
-
 ### Ad-hoc Feed Consumption
 
 Specify one or more feed source urls for ad-hoc consumption.
@@ -49,9 +41,24 @@ Consume GTFS data from all known feed sources.
 bundle exec rake station_attendant:consume_feeds
 ```
 
+Consume GTFS data from all known feed sources, and persist into the database for presentation purposes.
+``` sh
+bundle exec rake station_attendant:find_and_consume_and_load
+```
+
+### API Endpoints
+
+ + **/agencies** (lists all participating transit agencies)
+ + **/agencies/`:agency_abbrev`** (lists all train stations serviced by a given agency)
+ + **/agencies/`:agency_abbrev`/stations/`:station_abbrev`** (lists upcoming departures from a given station)
+
+These endpoints return HTML by default. To request a JSON response instead, suffix `.json` to the endpoint url.
+
 ## Contributing
 
-Issues and Pull Requests are welcome.
+To request a new feature, create an issue.
+
+To deliver a new feature, fork the repo, make your changes, add tests if possible, and submit a pull request.
 
 ### Development Environment
 

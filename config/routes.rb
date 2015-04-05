@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  #TODO: reconcile differences between similar agencies, assign each a unique identifier, and open up the endpoints below.
   get 'agencies' => 'agencies#index', :as => 'agencies'
   get 'agencies/:agency_abbreviation/' => 'agencies#show', :as => 'agency'
   get 'agencies/:agency_abbreviation/stations/:station_abbreviation'  => 'stations#show', :as => 'station'
@@ -8,9 +9,10 @@ Rails.application.routes.draw do
   get 'hosts/:id' => 'feed_hosts#show', :as => 'host'
 
   #get 'feeds' => 'feeds#index', :as => 'feeds'
-  get 'feeds/:id' => 'feeds#show', :as => 'feed'
+  #get 'feeds/:id' => 'feeds#show', :as => 'feed'
 
-  root 'feed_hosts#index'
+  #get 'hosts/:host_id/feeds' => 'hosted_feeds#index', :as => 'hosted_feeds'
+  #get 'hosts/:host_id/feeds/:feed_id' => 'hosted_feeds#show', :as => 'hosted_feed'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
@@ -66,4 +68,6 @@ Rails.application.routes.draw do
   #     # (app/controllers/admin/products_controller.rb)
   #     resources :products
   #   end
+
+  root 'feed_hosts#index'
 end

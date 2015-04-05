@@ -1,5 +1,5 @@
 <ol class="breadcrumb">
-  <li><%= link_to "Feeds", hosts_path %></li>
+  <li><%= link_to "Feeds", feeds_path %></li>
   <li class="active"><%= link_to @feed.name, feed_path(@feed) %></li>
 </ol>
 
@@ -7,6 +7,8 @@
 
 <%= render :partial => "summary_table", :locals => {:feeds => [@feed]} %>
 
-<h3><%= "Agencies"%></h3>
+<h3><%= "Feed Details"%></h3>
+
+<h4><%= "Agencies"%></h4>
 
 <%= render :partial => "agencies/summary_table", :locals => {:agencies => @feed.agencies} %>

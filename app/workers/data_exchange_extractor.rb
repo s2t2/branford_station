@@ -12,11 +12,15 @@ class DataExchangeExtractor
         next
       end
 
+      puts "Extracting -- #{extracted_agency[:name]}"
+
       agency = DataExchangeAgency.where(
         :dataexchange_id => extracted_agency[:dataexchange_id]
       ).first_or_create
       agency.update_attributes(
-        :name => extracted_agency[:name]
+        :name => extracted_agency[:name],
+        :url => extracted_agency[:url],
+        :dataexchange_url => extracted_agency[:dataexchange_url]
       )
     end
   end
