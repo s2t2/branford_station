@@ -11,7 +11,7 @@
     <tbody>
       <% hosts.each do |host| %>
       <tr>
-        <td><%= link_to host.name.try(:upcase), host_path(host) %></td>
+        <td><%= link_to host.name, host_path(host) %></td>
         <!--td><%#= host.feed_names %></td-->
         <!--td><%#= host.feed_agencies %></td-->
         <td><%= link_to host.url, :title => "Visit host at #{host.name}" do %><%= host.url %>&nbsp;<i class="fa fa-external-link"></i><% end %></td>

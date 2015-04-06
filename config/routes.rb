@@ -1,9 +1,6 @@
 Rails.application.routes.draw do
 
-  #TODO: reconcile differences between similar agencies, assign each a unique identifier, and open up the endpoints below.
-  get 'agencies' => 'agencies#index', :as => 'agencies'
-  get 'agencies/:agency_abbreviation/' => 'agencies#show', :as => 'agency'
-  get 'agencies/:agency_abbreviation/stations/:station_abbreviation'  => 'stations#show', :as => 'station'
+  #resources :feed_checks, :only => [:new]
 
   get 'hosts' => 'feed_hosts#index', :as => 'hosts'
   get 'hosts/:id' => 'feed_hosts#show', :as => 'host'
@@ -11,8 +8,20 @@ Rails.application.routes.draw do
   #get 'feeds' => 'feeds#index', :as => 'feeds'
   #get 'feeds/:id' => 'feeds#show', :as => 'feed'
 
-  #get 'hosts/:host_id/feeds' => 'hosted_feeds#index', :as => 'hosted_feeds'
-  #get 'hosts/:host_id/feeds/:feed_id' => 'hosted_feeds#show', :as => 'hosted_feed'
+  get 'hosts/:host_id/feeds' => 'hosted_feeds#index', :as => 'hosted_feeds'
+  get 'hosts/:host_id/feeds/:feed_id' => 'hosted_feeds#show', :as => 'hosted_feed'
+
+  get 'hosts/:host_id/feeds/:feed_id/versions' => 'hosted_feed_versions#index', :as => 'hosted_feed_versions'
+  get 'hosts/:host_id/feeds/:feed_id/versions/:version_id' => 'hosted_feed_versions#show', :as => 'hosted_feed_version'
+
+  get 'hosts/:host_id/feeds/:feed_id/versions/:version_id/agencies' => 'agency_versions#index', :as => 'agency_versions'
+  get 'hosts/:host_id/feeds/:feed_id/versions/:version_id/agencies/:agency_id' => 'agency_versions#show', :as => 'agency_version'
+
+  #get 'agencies' => 'agencies#index', :as => 'agencies'
+  #get 'agencies/:agency_abbreviation/' => 'agencies#show', :as => 'agency'
+  #get 'agencies/:agency_abbreviation/stations/:station_abbreviation'  => 'stations#show', :as => 'station'
+
+  ###
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

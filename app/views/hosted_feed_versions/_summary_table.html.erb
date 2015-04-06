@@ -1,0 +1,26 @@
+<div class="table-responsive">
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <!--th>Feed Name</th-->
+        <th>Version Identifier (Etag)</th>
+        <th>Version Posted At (Last Modified At)</th>
+        <th>Version Last Verified At</th>
+        <th>Version Is Latest?</th>
+        <th>Version Is Current?</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% versions.each do |version| %>
+      <tr>
+        <!--td><%#= version.feed_name %></td-->
+        <td><%= link_to version.name, hosted_feed_version_path(:version_id => version.id) %></td>
+        <td><%= "#{version.last_modified_at} (#{time_ago_in_words(version.last_modified_at)} ago)" %></td>
+        <td><%= "#{version.last_checked_at} (#{time_ago_in_words(version.last_checked_at)} ago)" %></td>
+        <td><span class="label label-<%= bootstrap_label_class(version.is_latest) %>"><%= version.is_latest %></span></td>
+        <td><span class="label label-<%= bootstrap_label_class(version.is_current) %>"><%= version.is_current %></span></td>
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

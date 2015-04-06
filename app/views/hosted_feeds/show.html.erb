@@ -1,0 +1,14 @@
+<ol class="breadcrumb">
+  <li><%= link_to "Hosts", hosts_path %></li>
+  <li><%= link_to @feed.host_name, host_path(@feed.host) %></li>
+  <li><%= link_to "Feeds", hosted_feeds_path(@feed.host_id) %></li>
+  <li class="active"><%= link_to @feed.name, hosted_feed_path(:host_id => @feed.host_id, :feed_id => @feed.id) %></li>
+</ol>
+
+<h2><%= "GTFS Feed Summary"%></h2>
+
+<%= render :partial => "summary_table", :locals => {:feeds => [@feed]} %>
+
+<h3><%= "Versions"%></h3>
+
+<%= render :partial => "hosted_feed_versions/summary_table", :locals => {:versions => @feed.versions.order(:last_modified_at => :desc)} %>

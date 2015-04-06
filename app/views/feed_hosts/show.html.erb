@@ -3,10 +3,10 @@
   <li class="active"><%= link_to @host.name, host_path(@host) %></li>
 </ol>
 
-<h3><%= "Host Summary"%></h3>
+<h2><%= "GTFS Host Summary"%></h2>
 
 <%= render :partial => "summary_table", :locals => {:hosts => [@host]} %>
 
-<h3><%= "Hosted Feeds"%></h3>
+<h3><%= "Feeds"%></h3>
 
-<%= render :partial => "feeds/summary_table", :locals => {:feeds => @host.feeds} %>
+<%= render :partial => "hosted_feeds/summary_table", :locals => {:feeds => @host.feeds} %>

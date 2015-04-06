@@ -1,52 +1,51 @@
 # Branford Station
 
-A tool for consuming and presenting open transit data published according to the [General Transit Feed Specification (GTFS)](https://developers.google.com/transit/gtfs/).
+A tool for use with [General Transit Feed Specification (GTFS)](https://developers.google.com/transit/gtfs/) open transit data.
 
 This application
- finds all known sources of GTFS data,
- consumes GTFS data from source,
- and presents GTFS data to the public through a web interface.
+ finds all GTFS data sources listed on maintained community sites like
+  the [GTFS Data Exchange](http://www.gtfs-data-exchange.com/) and 
+  the [Google Transit Data Feed Wiki](https://code.google.com/p/googletransitdatafeed/wiki/PublicFeeds),
+ periodically checks feed sources to confirm current data or download new data,
+ and makes the data available for public consumption (through both an api and front-end interface).
 
 ##  Usage
 
-### Ad-hoc Feed Consumption
+### Find data sources
 
-Specify one or more feed source urls for ad-hoc consumption.
-```` rb
-FeedConsumer.perform(:source_urls => ["http://www.shorelineeast.com/google_transit.zip", "http://web.mta.info/developers/data/mnr/google_transit.zip"])
-````
-
-By default this will download feed files to your local fylesystem.
- To load file contents into the database, pass `:load => true` as consumption request options.
- ```` rb
-FeedConsumer.perform(:source_urls => ["http://www.shorelineeast.com/google_transit.zip", "http://web.mta.info/developers/data/mnr/google_transit.zip"], :load => true)
-````
-
-### Systematic Feed Discovery and Consumption
-
-Find all known sources of GTFS Data from community sites.
-
-Find feeds from the [GTFS Data Exchange](http://www.gtfs-data-exchange.com/).
 ```` sh
 bundle exec rake station_attendant:find_data_exchange_feeds
 ````
 
-Find feeds from the [Google Transit Data Feed - Public Feeds Wiki](https://code.google.com/p/googletransitdatafeed/wiki/PublicFeeds).
 ```` sh
 bundle exec rake station_attendant:find_google_transit_data_feeds
 ````
 
-Consume GTFS data from all known feed sources.
-``` sh
-bundle exec rake station_attendant:consume_feeds
-```
+### Consume data from source
 
-Consume GTFS data from all known feed sources, and persist into the database for presentation purposes.
 ``` sh
 bundle exec rake station_attendant:find_and_consume_and_load
 ```
 
+#### Other sources
+
+You may also specify one or more feed source urls for ad-hoc consumption.
+
+Download feed files onto filesystem.
+
+```` rb
+FeedConsumer.perform(:source_urls => ["http://www.shorelineeast.com/google_transit.zip", "http://web.mta.info/developers/data/mnr/google_transit.zip"])
+````
+
+Or load files into database.
+
+ ```` rb
+FeedConsumer.perform(:source_urls => ["http://www.shorelineeast.com/google_transit.zip", "http://web.mta.info/developers/data/mnr/google_transit.zip"], :load => true)
+````
+
 ### API Endpoints
+
+Once persisted, make HTTP requests or view GTFS data in a browser using the endpoint urls listed below.
 
  + **/agencies** (lists all participating transit agencies)
  + **/agencies/`:agency_abbrev`** (lists all train stations serviced by a given agency)
@@ -56,14 +55,14 @@ These endpoints return HTML by default. To request a JSON response instead, suff
 
 ## Contributing
 
-To request a new feature, create an issue.
+To request a new feature, [create an issue](https://github.com/s2t2/branford_station/issues/new).
 
-To deliver a new feature, fork the repo, make your changes, add tests if possible, and submit a pull request.
+To deliver a new feature, [fork the repo](https://github.com/s2t2/branford_station/issues#fork-destination-box), make your changes, add tests if possible, and submit a pull request.
 
-### Development Environment
+### Development Environment Setup
 
 Install dependencies for a Ruby on Rails application.
 
-### Production Environment
+### Production Environment Considerations
 
-Optionally use [this script](https://github.com/s2t2/trailmix-solo) to deploy the application to a remote, hosted server.
+Thanks to *HOSTING ORGANIZATION HERE* for hosting this application in production.
