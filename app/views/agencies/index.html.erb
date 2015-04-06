@@ -1,0 +1,7 @@
+<ol class="breadcrumb">
+  <li class="active"><%= link_to "Agencies", agencies_path %></li>
+</ol>
+
+<h3>Transit Agencies</h3>
+
+<%= render :partial => "summary_table", :locals => {:agencies => @agencies} %>

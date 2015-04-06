@@ -13,16 +13,19 @@ gem 'sdoc', '~> 0.4.0', group: :doc # bundle exec rake doc:rails generates the A
 # gem 'bcrypt', '~> 3.1.7' # Use ActiveModel has_secure_password
 # gem 'unicorn' # Use Unicorn as the app server
 # gem 'capistrano-rails', group: :development # Use Capistrano for deployment
+
 gem 'gtfs_data_exchange_api' #, :git => "https://github.com/data-creative/gtfs-data-exchange-api-ruby/", :branch => "0.1.0"
 gem 'nokogiri'
 gem 'rubyzip', '~> 1.1' #, require: 'zip'
 #gem 'gtfs-meta', :git => "https://github.com/data-creative/gtfs-meta/", :branch => "0.1.0"
 gem 'gtfs'
+#gem 'composite_primary_keys', '=8.0.0'
+gem 'httparty'
 
 group :development, :test do
   # gem 'byebug' # Call 'byebug' anywhere in the code to stop execution and get a debugger console
-  # gem 'web-console', '~> 2.0' # Access an IRB console on exception pages or by using <%= console %> in views
-  # gem 'spring' # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
+  gem 'web-console', '~> 2.0' # Access an IRB console on exception pages or by using <%= console %> in views
+  gem 'spring' # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'pry'
   gem 'rspec-rails', '~> 3.0'
 end

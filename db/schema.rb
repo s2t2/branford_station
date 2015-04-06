@@ -11,7 +11,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150215052947) do
+ActiveRecord::Schema.define(version: 20150316003530) do
+
+  create_table "agency_versions", force: :cascade do |t|
+    t.integer  "version_id", limit: 4,   null: false
+    t.string   "identifier", limit: 255
+    t.string   "name",       limit: 255, null: false
+    t.string   "url",        limit: 255, null: false
+    t.string   "timezone",   limit: 255, null: false
+    t.string   "lang",       limit: 255
+    t.string   "phone",      limit: 255
+    t.string   "fare_url",   limit: 255
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+  end
 
   create_table "data_exchange_agencies", force: :cascade do |t|
     t.string   "dataexchange_id",   limit: 255, null: false

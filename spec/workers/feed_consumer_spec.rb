@@ -10,17 +10,18 @@ RSpec.describe FeedConsumer do
       #"http://www.cttransit.com/uploads_GTFS/googlewat_transit.zip",
       #"http://www.cttransit.com/uploads_GTFS/googlenb_transit.zip",
       #"http://www.cttransit.com/uploads_GTFS/googleme_transit.zip",
-      #"http://www.shorelineeast.com/google_transit.zip",
       #"http://dati.muovi.roma.it/gtfs/google_transit.zip",
-      "http://developer.trimet.org/schedule/gtfs.zip"
+      #"http://developer.trimet.org/schedule/gtfs.zip",
+      "http://web.mta.info/developers/data/mnr/google_transit.zip",
+      "http://www.shorelineeast.com/google_transit.zip",
     ]}
+    let(:gtfs_data_directory){ "gtfs_filesystem" }
 
-    context "when choosing a filesystem load strategy" do
-      let(:load_strategy){ "filesystem" }
-      let(:gtfs_data_directory){ "gtfs" }
+    context "filesystem" do
+      let(:load){ false }
 
       it 'downloads feed files from source' do
-        FeedConsumer.perform({:source_urls => source_urls, :load_strategy => load_strategy})
+        FeedConsumer.perform({:source_urls => source_urls, :load => load})
 
         source_urls.each do |source_url|
           uri = URI.parse(source_url)
@@ -33,12 +34,31 @@ RSpec.describe FeedConsumer do
       end
     end
 
-    context "when choosing a database load strategy" do
-      let(:load_strategy){ "database" }
+    context "database" do
+      let(:load){ true }
+      let(:agency_txt_sample_row){
+        {
+          "agency_id" => "SLE",
+          " agency_name" => "Shore Line East",
+          "agency_url" => "http://www.shorelineeast.com/",
+          "agency_timezone" => "America/New_York",
+          "agency_phone" => "1-877-287-4337",
+          "agency_lang" => "en"
+        } #<CSV::Row "agency_id":"SLE" " agency_name":"Shore Line East" "agency_url":"http://www.shorelineeast.com/" "agency_timezone":"America/New_York" "agency_phone":"1-877-287-4337" "agency_lang":"en">
+      }
 
       it 'loads feed file contents into database' do
-        FeedConsumer.perform({:source_urls => source_urls, :load_strategy => load_strategy})
-        true
+        AgencyVersion.destroy_all
+        FeedConsumer.perform({:source_urls => source_urls, :load => load})
+        expect(AgencyVersion.any?)
+      end
+
+      it 'handles minor discrepencies between actual agency.txt header names and expected agency.txt header names' do
+        discrepency = {:expected_header_name => "agency_name", :actual_header_name => " agency_name"}
+        value_from_expected_methodology = agency_txt_sample_row.send(:[], discrepency[:expected_header_name])
+        value_from_actual_methodlogy = agency_txt_sample_row.send(:[], discrepency[:actual_header_name])
+
+        expect([value_from_expected_methodology, value_from_actual_methodlogy].compact.any?)
       end
     end
   end

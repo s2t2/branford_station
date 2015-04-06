@@ -1,0 +1,28 @@
+<div class="table-responsive">
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <!--th>Host Name</th-->
+        <th>Feed Name</th>
+        <th>Feed Source Url</th>
+        <th>Feed Last Modified At</th>
+        <th>Feed Last Checked At</th>
+        <!--th>Check Feed For Latest Version</th-->
+        <!--th>Feed Agency Names</th-->
+      </tr>
+    </thead>
+    <tbody>
+      <% feeds.each do |feed| %>
+      <tr>
+        <!--td><%#= link_to feed.host_name, host_path(feed.host) %></td-->
+        <td><%= link_to feed.name, hosted_feed_path(:host_id => feed.host_id, :feed_id => feed.id) %></td>
+        <td><%= link_to feed.source_url, :title => "Download hosted GTFS data from #{feed.source_url}" do %><%= feed.source_url %>&nbsp;<i class="fa fa-cloud-download"></i><% end %></td>
+        <td><%= feed.last_modified_at ? (link_to "#{time_ago_in_words(feed.last_modified_at)} ago", hosted_feed_version_path(:host_id => feed.host_id, :feed_id => feed.id, :version_id => feed.latest_version_id)) : "N/A" %></td>
+        <td><%= feed.last_checked_at ? "#{time_ago_in_words(feed.last_checked_at)} ago" : "N/A" %></td>
+        <!--td><%#= link_to new_feed_check_path(feed) %></td-->
+        <!--td><%#= feed.agency_names %></td-->
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
