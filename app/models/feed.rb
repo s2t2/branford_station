@@ -9,6 +9,10 @@ class Feed < ActiveRecord::Base
     versions.latest
   end
 
+  def latest_version_id
+    latest_version.try(:id)
+  end
+
   def last_modified_at
     latest_version.try(:last_modified_at)
   end
