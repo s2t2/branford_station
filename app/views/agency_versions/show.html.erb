@@ -9,6 +9,6 @@
   <li class="active"><%= link_to @agency.name, agency_version_path(:agency_id => @agency.id) %></li>
 </ol>
 
-<h2><%= "Agency Summary"%></h2>
+<h2>Agency Summary</h2>
 
 <%= render :partial => "agency_versions/summary_table", :locals => {:agencies => [@agency]} %>

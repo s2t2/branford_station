@@ -1,13 +1,11 @@
 # Branford Station
 
-A tool for use with [General Transit Feed Specification (GTFS)](https://developers.google.com/transit/gtfs/) open transit data.
-
 This application
- finds all GTFS data sources listed on maintained community sites like
+ finds sources of [General Transit Feed Specification (GTFS)](https://developers.google.com/transit/gtfs/) open transit data from community-maintained sites like
   the [GTFS Data Exchange](http://www.gtfs-data-exchange.com/) and 
   the [Google Transit Data Feed Wiki](https://code.google.com/p/googletransitdatafeed/wiki/PublicFeeds),
  periodically checks feed sources to confirm current data or download new data,
- and makes the data available for public consumption (through both an api and front-end interface).
+ and makes the data available for public consumption through an api and front-end interface.
 
 ##  Usage
 

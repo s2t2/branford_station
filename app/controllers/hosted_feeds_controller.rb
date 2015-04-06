@@ -11,4 +11,11 @@ class HostedFeedsController < ApplicationController
     feed_id = params[:feed_id]
     @feed = Feed.where(:host_id => host_id, :id => feed_id).first
   end
+
+  def show_latest
+    feed_id = params[:feed_id]
+    feed = Feed.find(feed_id)
+    latest_version = feed.latest_version
+    redirect_to hosted_feed_version_path(:version_id => latest_version.id)
+  end
 end

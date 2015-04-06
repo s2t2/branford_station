@@ -1,0 +1,8 @@
+<ol class="breadcrumb">
+  <li><%= link_to "Agencies", agencies_path %></li>
+  <li class="active"><%= link_to @agency.name, agency_path(:agency_id => @agency.id) %></li>
+</ol>
+
+<h3>Transit Agency Summary</h3>
+
+<%= render :partial => "summary_table", :locals => {:agencies => [@agency]} %>

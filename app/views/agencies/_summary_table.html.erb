@@ -15,8 +15,8 @@
       <% agencies.each do |agency| %>
       <tr>
         <!--td><%#= link_to "Agency ##{agency.id}", agency_path(agency) %></td-->
-        <td><%= link_to agency.name, agency_path(agency) %></td>
-        <td><%= link_to agency.url, :title => "Visit agency website at #{agency.url}" do %><i class="fa fa-external-link"></i><% end %></td>
+        <td><%= link_to agency.name, agency_path(:agency_id => agency.id) %></td>
+        <td><%= link_to agency.url, :title => "Visit agency website at #{agency.url}" do %><%= truncate(agency.url, :length => 25) %> &nbsp; <i class="fa fa-external-link"></i><% end %></td>
         <td><%= agency.timezone %></td>
         <td><%= agency.lang %></td>
         <td><%= agency.phone %></td>
