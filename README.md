@@ -5,7 +5,7 @@ This application
   the [GTFS Data Exchange](http://www.gtfs-data-exchange.com/) and 
   the [Google Transit Data Feed Wiki](https://code.google.com/p/googletransitdatafeed/wiki/PublicFeeds),
  periodically checks feed sources to confirm current data or download new data,
- and makes the data available for public consumption through an [API](http://en.wikipedia.org/wiki/Application_programming_interface) and front-end interface.
+ and makes the data available for public consumption through an [API](http://en.wikipedia.org/wiki/Application_programming_interface#Web_APIs) and front-end interface.
 
 ##  Usage
 
