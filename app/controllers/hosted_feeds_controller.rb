@@ -22,8 +22,14 @@ class HostedFeedsController < ApplicationController
   def check
     feed_id = params[:feed_id]
     feed = Feed.find(feed_id)
-    feed.check_for_updates
-    flash[:info] = "Checking feed source for new content. This may take a moment. Refresh the page for results."
-    #redirect_to hosted_feed_path(:feed_id => feed.id)
+    latest_version = feed.consume
+
+    #if latest_version.is_a?(FeedVersion)
+      flash[:success] = "Successfully checked the feed. See below for a comprehensive list of versions..."
+    #else
+      #flash[:success] = "Oh, the latest version of this feed is not available or not properly formatted."
+    #end
+
+    redirect_to hosted_feed_path(:feed_id => feed.id)
   end
 end

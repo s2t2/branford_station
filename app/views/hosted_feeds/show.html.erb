@@ -1,15 +1,17 @@
-<ol class="breadcrumb">
-  <li><%= link_to "Hosts", hosts_path %></li>
-  <li><%= link_to @feed.host_name, host_path(@feed.host) %></li>
-  <li><%= link_to "Feeds", hosted_feeds_path(@feed.host_id) %></li>
-  <li class="active"><%= link_to @feed.name, hosted_feed_path(:host_id => @feed.host_id, :feed_id => @feed.id) %></li>
-</ol>
+<%= content_for(:breadcrumb_nav) do %>
+  <ol class="breadcrumb">
+    <li><%= link_to "Hosts", hosts_path %></li>
+    <li><%= link_to @feed.host_name, host_path(@feed.host) %></li>
+    <li><%= link_to "Feeds", hosted_feeds_path(@feed.host_id) %></li>
+    <li class="active"><%= link_to @feed.name, hosted_feed_path(:host_id => @feed.host_id, :feed_id => @feed.id) %></li>
+  </ol>
+<% end %>
 
 <h2 style="display:inline-block;"><%= "GTFS Feed Summary"%></h2>
 
 <span class="pull-right" style="margin-top:20px;">
-  <%= button_to hosted_feed_check_path(:host_id => @feed.host_id, :feed_id => @feed.id), :id => "feed-check-requestor", :class => 'btn btn-small btn-primary', :title => "Check feed for new content" do %>
-    <i id="feed-check-requestor-icon" class="fa fa-refresh"></i> Check for updates
+  <%= link_to hosted_feed_check_path(:host_id => @feed.host_id, :feed_id => @feed.id), :id => "feed-check-requestor", :class => 'btn btn-default btn-sm', :title => "Check feed." do %>
+    <i id="spinnable-icon" class="fa fa-refresh"></i> <span id="button-label">Check feed</span>
   <% end %>
 </span>
 
@@ -21,6 +23,18 @@
 
 <%= content_for(:js_footer) do %>
 <script type="text/javascript">
- // add "fa-spin" class to #feed-check-requestor-icon
+
+    var button_label = document.getElementById("button-label")
+    var spinnable_icon = document.getElementById("spinnable-icon")
+
+    function requestFeedConsumption(){
+        spinnable_icon.classList.add("fa-spin")
+        button_label.textContent = "checking feed now... this could take a moment..."
+    }
+
+    $("#feed-check-requestor").click(function(){
+        requestFeedConsumption()
+    })
+
 </script>
 <% end %>

@@ -18,12 +18,14 @@ class FeedConsumer
   # @option options [boolean] :transit_data_feed (false) Whether or not to include sources from the google transit data feed.
   # @option options [boolean] :data_exchange (false) Whether or not to include sources from the data exchange.
   # @option options [boolean] :load (false) Whether or not to load file contents into the database.
+  # @option options [boolean] :talkative (true) Whether or not to verbally alert the user when the process is complete.
   #
   def self.perform(options = {})
     load_request = options[:load] || false
     transit_data_feed_request = options[:transit_data_feed] || false
     data_exchange_request = options[:data_exchange] || false
     source_urls = options[:source_urls] || []
+    talkative = options[:talkative].nil? ? (Rails.env == "development" ? true : false) : options[:talkative]
 
     # Compile source urls.
 
@@ -137,6 +139,6 @@ class FeedConsumer
       end
     end
 
-    system "say 'process managed'" if Rails.env == "development"
+    system "say 'process managed'" if talkative == true
   end
 end

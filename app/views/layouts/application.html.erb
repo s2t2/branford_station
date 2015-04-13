@@ -11,6 +11,7 @@
 <body>
 
 <div style="width:75em; margin:0 auto; padding: 0 10;">
+  <%= yield(:breadcrumb_nav) %>
   <%= render :partial => "layouts/flash", :locals => {:flash => flash} %>
   <%= yield %>
   <hr>
