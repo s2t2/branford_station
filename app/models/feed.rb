@@ -36,4 +36,8 @@ class Feed < ActiveRecord::Base
   def agencies
     latest_version.agencies
   end
+
+  def consume
+    FeedConsumer.perform(:source_urls => [source_url], :load => true, :talkative => false)
+  end
 end

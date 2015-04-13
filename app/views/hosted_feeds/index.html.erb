@@ -1,8 +1,10 @@
-<ol class="breadcrumb">
-  <li><%= link_to "Hosts", hosts_path %></li>
-  <li><%= link_to @host.name, host_path(@host) %></li>
-  <li class="active"><%= link_to "Hosted Feeds", hosted_feeds_path(@host) %></li>
-</ol>
+<% content_for(:breadcrumb_nav) do %>
+  <ol class="breadcrumb">
+    <li><%= link_to "Hosts", hosts_path %></li>
+    <li><%= link_to @host.name, host_path(@host) %></li>
+    <li class="active"><%= link_to "Hosted Feeds", hosted_feeds_path(@host) %></li>
+  </ol>
+<% end %>
 
 <h3><%= "Hosted Feeds"%></h3>
 

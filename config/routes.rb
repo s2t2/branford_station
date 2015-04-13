@@ -11,6 +11,7 @@ Rails.application.routes.draw do
   get 'hosts/:host_id/feeds' => 'hosted_feeds#index', :as => 'hosted_feeds'
   get 'hosts/:host_id/feeds/:feed_id' => 'hosted_feeds#show', :as => 'hosted_feed'
   get 'hosts/:host_id/feeds/:feed_id/latest_version' => 'hosted_feeds#show_latest', :as => 'hosted_feed_latest_version'
+  get 'hosts/:host_id/feeds/:feed_id/check' => 'hosted_feeds#check', :as => 'hosted_feed_check'
 
   get 'hosts/:host_id/feeds/:feed_id/versions' => 'hosted_feed_versions#index', :as => 'hosted_feed_versions'
   get 'hosts/:host_id/feeds/:feed_id/versions/:version_id' => 'hosted_feed_versions#show', :as => 'hosted_feed_version'

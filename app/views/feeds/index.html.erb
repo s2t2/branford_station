@@ -1,6 +1,8 @@
-<ol class="breadcrumb">
-  <li class="active"><%= link_to "Feeds", feeds_path %></li>
-</ol>
+<% content_for(:breadcrumb_nav) do %>
+  <ol class="breadcrumb">
+    <li class="active"><%= link_to "Feeds", feeds_path %></li>
+  </ol>
+<% end %>
 
 <h3><%= "Feed Summary"%></h3>
 

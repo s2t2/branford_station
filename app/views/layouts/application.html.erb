@@ -11,13 +11,15 @@
 <body>
 
 <div style="width:75em; margin:0 auto; padding: 0 10;">
+  <%= yield(:breadcrumb_nav) %>
+  <%= render :partial => "layouts/flash", :locals => {:flash => flash} %>
   <%= yield %>
   <hr>
   <footer style="margin-bottom:2em;">
     <p><%=  link_to "view", "/" %>&nbsp;|&nbsp;<%=  link_to "source", "https://github.com/s2t2/branford_station" %> </p>
   </footer>
 </div>
-
+<%= yield(:js_footer) %>
 </body>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 </html>
