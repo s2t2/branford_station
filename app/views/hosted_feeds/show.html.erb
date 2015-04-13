@@ -1,4 +1,4 @@
-<%= content_for(:breadcrumb_nav) do %>
+<% content_for(:breadcrumb_nav) do %>
   <ol class="breadcrumb">
     <li><%= link_to "Hosts", hosts_path %></li>
     <li><%= link_to @feed.host_name, host_path(@feed.host) %></li>

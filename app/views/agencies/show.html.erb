@@ -1,7 +1,9 @@
-<ol class="breadcrumb">
-  <li><%= link_to "Agencies", agencies_path %></li>
-  <li class="active"><%= link_to @agency.name, agency_path(:agency_id => @agency.id) %></li>
-</ol>
+<% content_for(:breadcrumb_nav) do %>
+  <ol class="breadcrumb">
+    <li><%= link_to "Agencies", agencies_path %></li>
+    <li class="active"><%= link_to @agency.name, agency_path(:agency_id => @agency.id) %></li>
+  </ol>
+<% end %>
 
 <h3>Transit Agency Summary</h3>
 
