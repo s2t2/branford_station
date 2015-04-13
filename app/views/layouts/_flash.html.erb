@@ -1,0 +1,6 @@
+<% flash.each do |k, v| %>
+  <div class="alert <%= "alert-#{k}" %> fade in">
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+    <%= content_tag :div, v, :id => "flash_#{k}" %>
+  </div>
+<% end %>

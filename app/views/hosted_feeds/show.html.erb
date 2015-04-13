@@ -5,10 +5,22 @@
   <li class="active"><%= link_to @feed.name, hosted_feed_path(:host_id => @feed.host_id, :feed_id => @feed.id) %></li>
 </ol>
 
-<h2><%= "GTFS Feed Summary"%></h2>
+<h2 style="display:inline-block;"><%= "GTFS Feed Summary"%></h2>
+
+<span class="pull-right" style="margin-top:20px;">
+  <%= button_to hosted_feed_check_path(:host_id => @feed.host_id, :feed_id => @feed.id), :id => "feed-check-requestor", :class => 'btn btn-small btn-primary', :title => "Check feed for new content" do %>
+    <i id="feed-check-requestor-icon" class="fa fa-refresh"></i> Check for updates
+  <% end %>
+</span>
 
 <%= render :partial => "summary_table", :locals => {:feeds => [@feed]} %>
 
 <h3><%= "Versions"%></h3>
 
 <%= render :partial => "hosted_feed_versions/summary_table", :locals => {:versions => @feed.versions.order(:last_modified_at => :desc)} %>
+
+<%= content_for(:js_footer) do %>
+<script type="text/javascript">
+ // add "fa-spin" class to #feed-check-requestor-icon
+</script>
+<% end %>
