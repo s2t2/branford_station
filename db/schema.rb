@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150316003530) do
+ActiveRecord::Schema.define(version: 20150413030426) do
 
   create_table "agency_versions", force: :cascade do |t|
     t.integer  "version_id", limit: 4,   null: false
@@ -107,5 +107,23 @@ ActiveRecord::Schema.define(version: 20150316003530) do
   end
 
   add_index "google_transit_data_feed_public_feeds", ["agency_id"], name: "index_google_transit_data_feed_public_feeds_on_agency_id", using: :btree
+
+  create_table "stop_versions", force: :cascade do |t|
+    t.integer  "version_id",          limit: 4,                            null: false
+    t.string   "identifier",          limit: 255,                          null: false
+    t.string   "code",                limit: 255
+    t.string   "name",                limit: 255,                          null: false
+    t.string   "description",         limit: 255
+    t.decimal  "latitude",                        precision: 10, scale: 8, null: false
+    t.decimal  "longitude",                       precision: 11, scale: 8, null: false
+    t.string   "zone_identifier",     limit: 255
+    t.string   "url",                 limit: 255
+    t.string   "location_type",       limit: 255
+    t.string   "parent_station",      limit: 255
+    t.string   "timezone",            limit: 255
+    t.string   "wheelchair_boarding", limit: 255
+    t.datetime "created_at",                                               null: false
+    t.datetime "updated_at",                                               null: false
+  end
 
 end

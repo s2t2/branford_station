@@ -133,6 +133,31 @@ class FeedConsumer
           )
         end
 
+        # Load Stops.
+
+        stops_txt = "#{destination_path}/stops.txt"
+        next unless File.exist?(stops_txt)
+
+        CSV.foreach(stops_txt, :headers => true) do |row|
+          stop_version = StopVersion.where(
+            :version_id => version.id,
+            :identifier => row["stop_id"],
+            :name => row["stop_name"],
+            :latitude => row["stop_lat"],
+            :longitude => row["stop_lon"],
+          ).first_or_create!
+          stop_version.update_attributes!(
+            :code => row["stop_code"],
+            :description => row["stop_desc"],
+            :zone_identifier => row["zone_id"],
+            :url => row["stop_url"],
+            :location_type => row["location_type"],
+            :parent_station => row["parent_station"],
+            :timezone => row["stop_timezone"],
+            :wheelchair_boarding => row["wheelchair_boarding"]
+          )
+        end
+
       rescue => e
         puts "#{e.class} -- #{e.message}"
         next

@@ -8,6 +8,7 @@ class FeedVersion < ActiveRecord::Base
     delegate :host_url, :to => :feed, :prefix => false
 
   has_many :agencies, :class_name => AgencyVersion, :foreign_key => :version_id, :inverse_of => :version
+  has_many :stops, :class_name => StopVersion, :foreign_key => :version_id, :inverse_of => :version
 
   #RECENCY_THRESHOLDS = [
   #  {:name => "current", :distance_from_now => 4.hours},

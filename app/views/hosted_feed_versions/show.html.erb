@@ -13,8 +13,12 @@
 
 <%= render :partial => "summary_table", :locals => {:versions => [@version]} %>
 
-<h3><%= "Contents"%></h3>
+<h3>Contents</h3>
 
-<h4><%= "Agencies"%></h4>
+<h4>Agencies</h4>
 
 <%= render :partial => "agency_versions/summary_table", :locals => {:agencies => @version.agencies} %>
+
+<h4>Station Stops</h4>
+
+<%= render :partial => "stop_versions/summary_table", :locals => {:stops => @version.stops} %>

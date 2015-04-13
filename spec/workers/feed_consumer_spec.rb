@@ -36,7 +36,7 @@ RSpec.describe FeedConsumer do
 
     context "database" do
       let(:load){ true }
-      let(:agency_txt_sample_row){
+      let(:agency_txt_sample_row){ #<CSV::Row "agency_id":"SLE" " agency_name":"Shore Line East" "agency_url":"http://www.shorelineeast.com/" "agency_timezone":"America/New_York" "agency_phone":"1-877-287-4337" "agency_lang":"en">
         {
           "agency_id" => "SLE",
           " agency_name" => "Shore Line East",
@@ -44,7 +44,22 @@ RSpec.describe FeedConsumer do
           "agency_timezone" => "America/New_York",
           "agency_phone" => "1-877-287-4337",
           "agency_lang" => "en"
-        } #<CSV::Row "agency_id":"SLE" " agency_name":"Shore Line East" "agency_url":"http://www.shorelineeast.com/" "agency_timezone":"America/New_York" "agency_phone":"1-877-287-4337" "agency_lang":"en">
+        }
+      }
+      let(:stops_txt_sample_row){ #<CSV::Row "stop_id":"1" "stop_code":nil "stop_name":"Grand Central" "stop_desc":nil "stop_lat":"40.752998" "stop_lon":"-73.977056" "zone_id":nil "stop_url":"http://as0.mta.info/mnr/stations/station_detail.cfm?key=1" "location_type":"0" "parent_station":nil "wheelchair_accessible":"1">
+        {
+          "stop_id"=>"1",
+          "stop_code"=>nil,
+          "stop_name"=>"Grand Central",
+          "stop_desc"=>nil,
+          "stop_lat"=>"40.752998",
+          "stop_lon"=>"-73.977056",
+          "zone_id"=>nil,
+          "stop_url"=>"http://as0.mta.info/mnr/stations/station_detail.cfm?key=1",
+          "location_type"=>"0",
+          "parent_station"=>nil,
+          "wheelchair_accessible"=>"1"
+        }
       }
 
       it 'loads feed file contents into database' do
