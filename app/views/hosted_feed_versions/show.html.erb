@@ -1,11 +1,13 @@
-<ol class="breadcrumb">
-  <li><%= link_to "Hosts", hosts_path %></li>
-  <li><%= link_to @version.host_name, host_path(@version.host_id) %></li>
-  <li><%= link_to "Feeds", hosted_feeds_path(@version.host_id) %></li>
-  <li><%= link_to @version.feed_name, hosted_feed_path(:host_id => @version.host_id, :feed_id => @version.feed_id) %></li>
-  <li><%= link_to "Versions", hosted_feed_versions_path(:feed_id => @version.feed_id) %></li>
-  <li class="active"><%= link_to @version.name, hosted_feed_version_path(:version_id => @version.id) %></li>
-</ol>
+<% content_for(:breadcrumb_nav) do %>
+  <ol class="breadcrumb">
+    <li><%= link_to "Hosts", hosts_path %></li>
+    <li><%= link_to @version.host_name, host_path(@version.host_id) %></li>
+    <li><%= link_to "Feeds", hosted_feeds_path(@version.host_id) %></li>
+    <li><%= link_to @version.feed_name, hosted_feed_path(:host_id => @version.host_id, :feed_id => @version.feed_id) %></li>
+    <li><%= link_to "Versions", hosted_feed_versions_path(:feed_id => @version.feed_id) %></li>
+    <li class="active"><%= link_to @version.name, hosted_feed_version_path(:version_id => @version.id) %></li>
+  </ol>
+<% end %>
 
 <h2><%= "GTFS Feed Version Summary"%></h2>
 

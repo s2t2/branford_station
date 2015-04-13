@@ -1,4 +1,4 @@
-<%= content_for(:breadcrumb_nav) do %>
+<% content_for(:breadcrumb_nav) do %>
   <ol class="breadcrumb">
     <li><%= link_to "Hosts", hosts_path %></li>
     <li><%= link_to @feed.host_name, host_path(@feed.host) %></li>
@@ -21,7 +21,7 @@
 
 <%= render :partial => "hosted_feed_versions/summary_table", :locals => {:versions => @feed.versions.order(:last_modified_at => :desc)} %>
 
-<%= content_for(:js_footer) do %>
+<% content_for(:js_footer) do %>
 <script type="text/javascript">
 
     var button_label = document.getElementById("button-label")
