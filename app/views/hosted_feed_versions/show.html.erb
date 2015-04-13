@@ -21,4 +21,10 @@
 
 <h4>Station Stops</h4>
 
+<h5>Station Map</h5>
+
+<%= render :partial => "stop_versions/map", :locals => {:stops => @version.stops} %>
+
+<h5>Station List</h5>
+
 <%= render :partial => "stop_versions/summary_table", :locals => {:stops => @version.stops} %>
