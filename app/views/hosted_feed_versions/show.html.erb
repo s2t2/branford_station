@@ -21,10 +21,22 @@
 
 <h4>Station Stops</h4>
 
-<h5>Station Map</h5>
+<div role="tabpanel">
+  <ul class="nav nav-tabs" role="tablist">
+    <li role="presentation">
+      <a href="#station-list" aria-controls="station-list" role="tab" data-toggle="tab">Station List</a>
+    </li>
+    <li role="presentation" class="active">
+      <a href="#station-map" aria-controls="station-map" role="tab" data-toggle="tab">Station Map</a>
+    </li>
+  </ul>
 
-<%= render :partial => "stop_versions/map", :locals => {:stops => @version.stops} %>
-
-<h5>Station List</h5>
-
-<%= render :partial => "stop_versions/summary_table", :locals => {:stops => @version.stops} %>
+  <div class="tab-content">
+    <div role="tabpanel" class="tab-pane active" id="station-list">
+      <%= render :partial => "stop_versions/summary_table", :locals => {:stops => @version.stops} %>
+    </div>
+    <div role="tabpanel" class="tab-pane" id="station-map">
+      <%= render :partial => "stop_versions/map", :locals => {:stops => @version.stops} %>
+    </div>
+  </div>
+</div>
