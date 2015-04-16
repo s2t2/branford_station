@@ -1,11 +1,11 @@
 <% content_for(:breadcrumb_nav) do %>
   <ol class="breadcrumb">
     <li><%= link_to "Hosts", hosts_path %></li>
-    <li><%= link_to @agency.host_name, host_path(@agency.host_id) %></li>
-    <li><%= link_to "Feeds", hosted_feeds_path(@agency.host_id) %></li>
-    <li><%= link_to @agency.feed_name, hosted_feed_path(:host_id => @agency.host_id, :feed_id => @agency.feed_id) %></li>
-    <li><%= link_to "Versions", hosted_feed_versions_path(:feed_id => @agency.feed_id) %></li>
-    <li><%= link_to @agency.version_name, hosted_feed_version_path(:host_id => @agency.host_id, :feed_id => @agency.feed_id, :version_id => @agency.version_id) %></li>
+    <li><%= link_to @stop.host_name, host_path(@stop.host_id) %></li>
+    <li><%= link_to "Feeds", hosted_feeds_path(@stop.host_id) %></li>
+    <li><%= link_to @stop.feed_name, hosted_feed_path(:host_id => @stop.host_id, :feed_id => @stop.feed_id) %></li>
+    <li><%= link_to "Versions", hosted_feed_versions_path(:feed_id => @stop.feed_id) %></li>
+    <li><%= link_to @stop.version_name, hosted_feed_version_path(:host_id => @stop.host_id, :feed_id => @stop.feed_id, :version_id => @stop.version_id) %></li>
     <li><%= link_to "Stops", stop_versions_path(:version_id => @stop.version_id) %></li>
     <li class="active"><%= link_to @stop.name, stop_version_path(:stop_id => @stop.id) %></li>
   </ol>
@@ -16,3 +16,9 @@
 <%= render :partial => "stop_versions/summary_table", :locals => {:stops => [@stop]} %>
 
 <h3>Station Map</h3>
+
+<%= render :partial => "stop_versions/map" %>
+
+<h3>Departures</h3>
+
+<h3>Arrivals</h3>

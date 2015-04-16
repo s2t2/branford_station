@@ -37,13 +37,30 @@
         icon: marker_icon
     }
 
-    var request_url = window.location.href + "/stops.json"
+    // Get request url based on the page. If on a show page, request the show page json. If on an index page, request the index page json.
+
+    if(window.location.href.indexOf("stops/") > -1){ // stops show page
+        var request_url = window.location.href + ".json"
+    } else if(window.location.href.indexOf("stops") > -1) { // stops index page
+        var request_url = window.location.href + ".json"
+    } else if(window.location.href.indexOf("stops") == -1) { // perhaps a version show page...
+        var request_url = window.location.href + "/stops.json"
+    }
+
     console.log("REQUEST URL", request_url)
 
     d3.json(request_url, function(stations){
         console.log(stations[0])
 
         bounds = []
+
+        // Convert a single station object into an array if necessary.
+
+        if(stations.length == undefined){
+            stations = [stations]
+        }
+
+        // Map all the stations.
 
         stations.forEach(function(d){
 

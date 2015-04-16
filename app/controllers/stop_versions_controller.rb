@@ -4,7 +4,8 @@ class StopVersionsController < ApplicationController
     @stops = StopVersion.where(:version_id => version_id)
   end
 
-  #def show
-  #
-  #end
+  def show
+    stop_id = params[:stop_id]
+    @stop = StopVersion.find(stop_id)
+  end
 end

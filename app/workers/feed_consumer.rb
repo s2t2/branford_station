@@ -118,6 +118,8 @@ class FeedConsumer
           :set_cookie => response_header["set-cookie"].try(:first)
         )
 
+        next if version.is_current && version.agencies.any? && version.stops.any?
+
         # Download feed files.
 
         response = Net::HTTP.get_response(uri)
