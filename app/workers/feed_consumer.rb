@@ -64,6 +64,38 @@ class FeedConsumer
         next unless response_header
         last_modified_at = response_header["last-modified"].try(:first).try(:to_datetime)
 
+        # Handle moving/redirected source. TODO: refactor this into a shared method...
+
+        if last_modified_at.nil? && response_head.class == Net::HTTPMovedPermanently && response_header["location"].present?
+
+          # Parse source url.
+
+          uri = URI.parse(response_header["location"].first)
+          feed_host_name = uri.host
+          feed_name = uri.path.split("/").last
+          puts uri
+
+          next unless feed_host_name && feed_name
+          feed_host = FeedHost.where(:name => feed_host_name).first_or_create # todo maybe store the feed_host_name as feed.url instead of feed_name as feed.name ...
+          feed = Feed.where(
+            :source_url => source_url,
+            :host_id => feed_host.id
+          ).first_or_create!
+          feed.update_attributes!(:name => feed_name)
+
+          # Request information about the latest source version.
+
+          next unless uri.scheme == "http"
+          response = nil
+          http = Net::HTTP.start(uri.host)
+          response_head = http.head(uri.path)
+          response_header = response_head.to_hash
+          pp response_header
+
+          next unless response_header
+          last_modified_at = response_header["last-modified"].try(:first).try(:to_datetime)
+        end
+
         next unless last_modified_at && last_modified_at.is_a?(DateTime)
         version = FeedVersion.where(
           :feed_id => feed.id,
