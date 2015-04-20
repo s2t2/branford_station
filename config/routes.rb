@@ -5,8 +5,7 @@ Rails.application.routes.draw do
   get 'hosts' => 'feed_hosts#index', :as => 'hosts'
   get 'hosts/:id' => 'feed_hosts#show', :as => 'host'
 
-  #get 'feeds' => 'feeds#index', :as => 'feeds'
-  #get 'feeds/:id' => 'feeds#show', :as => 'feed'
+  resources :feeds, :except => [:edit]
 
   get 'hosts/:host_id/feeds' => 'hosted_feeds#index', :as => 'hosted_feeds'
   get 'hosts/:host_id/feeds/:feed_id' => 'hosted_feeds#show', :as => 'hosted_feed'
@@ -84,5 +83,5 @@ Rails.application.routes.draw do
   #     resources :products
   #   end
 
-  root 'feed_hosts#index'
+  root 'feeds#index'
 end

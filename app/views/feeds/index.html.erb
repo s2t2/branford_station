@@ -4,6 +4,12 @@
   </ol>
 <% end %>
 
-<h3><%= "Feed Summary"%></h3>
+<h2 style="display:inline-block;">Feeds</h2>
+
+<span class="pull-right" style="margin-top:20px;">
+  <%= link_to new_feed_path, :class => 'btn btn-default btn-sm', :title => "Add a new feed." do %>
+    <i class="fa fa-plus"></i> <span id="button-label">New feed</span>
+  <% end %>
+</span>
 
 <%= render :partial => "summary_table", :locals => {:feeds => @feeds} %>

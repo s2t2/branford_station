@@ -1,0 +1,10 @@
+<% content_for(:breadcrumb_nav) do %>
+  <ol class="breadcrumb">
+    <li><%= link_to "Feeds", feeds_path %></li>
+    <li class="active"><%= link_to "new", new_feed_path %></li>
+  </ol>
+<% end %>
+
+<h2>Create a new Feed</h2>
+
+<%= render 'form' %>
