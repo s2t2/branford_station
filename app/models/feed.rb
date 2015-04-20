@@ -17,6 +17,10 @@ class Feed < ActiveRecord::Base
     latest_version.try(:last_modified_at)
   end
 
+  def is_current
+    latest_version.try(:is_current)
+  end
+
   def most_recently_checked_version
     versions.most_recently_checked
   end

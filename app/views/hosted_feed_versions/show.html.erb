@@ -19,12 +19,8 @@
 
 <%= render :partial => "agency_versions/summary_table", :locals => {:agencies => @version.agencies} %>
 
-<h4>Station Stops</h4>
-
-<h5>Station Map</h5>
+<h4>Stops</h4>
 
 <%= render :partial => "stop_versions/map" %>
-
-<h5>Station List</h5>
 
 <%= render :partial => "stop_versions/summary_table", :locals => {:stops => @version.stops} %>
