@@ -192,6 +192,30 @@ class FeedConsumer
           )
         end
 
+        # Load StopTimes.
+
+        stop_times_txt = "#{destination_path}/stop_times.txt"
+        next unless File.exist?(stop_times_txt)
+
+        CSV.foreach(stop_times_txt, :headers => true) do |row|
+          stop_time_version = StopTimeVersion.where(
+            :version_id => version.id,
+            :identifier => row["stop_id"],
+            :trip_id => row["trip_id"],
+            :arrival_time => row["arrival_time"],
+            :departure_time => row["departure_time"],
+            :stop_id => row["stop_id"],
+            :stop_sequence => row["stop_sequence"]
+          ).first_or_create!
+          stop_time_version.update_attributes!(
+            :stop_headsign => row["stop_headsign"],
+            :pickup_type => row["pickup_type"],
+            :drop_off_type => row["drop_off_type"],
+            :shape_dist_traveled => row["shape_dist_traveled"],
+            :timepoint => row["timepoint"]
+          )
+        end
+
       rescue => e
         puts "#{e.class} -- #{e.message}"
         next

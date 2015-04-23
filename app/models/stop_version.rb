@@ -8,4 +8,6 @@ class StopVersion < ActiveRecord::Base
     ##delegate :host_url, :to => :version, :prefix => false #=> stop_version.host_url
     ##delegate :source_url, :to => :version, :prefix => false #=> stop_version.source_url
     ###delegate :stops, :to => :version, :prefix => false #=> agency_verion.stops
+
+  has_many :stop_times, :class_name => StopTimeVersion, :inverse_of => :stops
 end
