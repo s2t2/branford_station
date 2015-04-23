@@ -5,7 +5,7 @@
         <th>Host</th>
         <th>Feed</th>
         <th>Last Checked</th>
-        <th>Check</th>
+        <!--th>Check</th-->
         <th>Last Modified</th>
         <th>Download</th>
       </tr>
@@ -20,7 +20,7 @@
             <%= feed.last_checked_at ? "#{time_ago_in_words(feed.last_checked_at)} ago" : "N/A" %>
           </span>
         </td>
-        <td><%= link_to hosted_feed_check_path(:host_id => feed.host_id, :feed_id => feed.id), :class => "btn btn-default btn-sm feed-check-requestor", :title => "Check feed for updates." do %><i class="fa fa-refresh <%= "feed-#{feed.id}-spinnable-icon" %> spinnable-icon"></i><% end %></td>
+        <!--td><%#= link_to hosted_feed_check_path(:host_id => feed.host_id, :feed_id => feed.id), :class => "btn btn-default btn-sm feed-check-requestor", :title => "Check feed for updates." do %><i class="fa fa-refresh <%#= "feed-#{feed.id}-spinnable-icon" %> spinnable-icon"></i><%# end %></td-->
         <td><%= feed.last_modified_at ? (link_to "#{time_ago_in_words(feed.last_modified_at)} ago", hosted_feed_version_path(:host_id => feed.host_id, :feed_id => feed.id, :version_id => feed.latest_version_id)) : "N/A" %></td>
         <td><%= link_to feed.source_url, :id => "feed-download-requestor", :class => 'btn btn-default btn-sm', :title => "Download feed from source." do %><i class="fa fa-cloud-download"></i><% end %></td>
       </tr>
