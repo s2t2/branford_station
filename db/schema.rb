@@ -111,8 +111,8 @@ ActiveRecord::Schema.define(version: 20150423035026) do
   create_table "stop_time_versions", force: :cascade do |t|
     t.integer  "version_id",          limit: 4,   null: false
     t.string   "trip_identifier",     limit: 255, null: false
-    t.time     "arrival_time",                    null: false
-    t.time     "departure_time",                  null: false
+    t.string   "arrival_time",        limit: 255, null: false
+    t.string   "departure_time",      limit: 255, null: false
     t.string   "stop_identifier",     limit: 255, null: false
     t.integer  "stop_sequence",       limit: 4,   null: false
     t.string   "stop_headsign",       limit: 255

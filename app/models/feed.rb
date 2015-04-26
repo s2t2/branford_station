@@ -58,6 +58,10 @@ class Feed < ActiveRecord::Base
   end
 
   def consume
-    FeedConsumer.perform(:source_urls => [source_url], :load => true, :talkative => false)
+    FeedConsumer.perform(:source_urls => [source_url], :load => true, :idempotence => false, :talkative => false)
+  end
+
+  def consume_light
+    FeedConsumer.perform(:source_urls => [source_url], :load => true, :idempotence => true, :talkative => false)
   end
 end

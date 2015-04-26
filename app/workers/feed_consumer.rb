@@ -25,6 +25,7 @@ class FeedConsumer
     transit_data_feed_request = options[:transit_data_feed] || false
     data_exchange_request = options[:data_exchange] || false
     source_urls = options[:source_urls] || []
+    idempotence_request = options[:idempotence] || false
     talkative = options[:talkative].nil? ? (Rails.env == "development" ? true : false) : options[:talkative]
 
     # Compile source urls.
@@ -64,7 +65,7 @@ class FeedConsumer
         next unless response_header
         last_modified_at = response_header["last-modified"].try(:first).try(:to_datetime)
 
-        # Handle moving/redirected source. TODO: refactor this into a shared method...
+        # Handle moved/redirected source. TODO: refactor this into a shared method...
 
         if last_modified_at.nil? && response_head.class == Net::HTTPMovedPermanently && response_header["location"].present?
 
@@ -118,7 +119,7 @@ class FeedConsumer
           :set_cookie => response_header["set-cookie"].try(:first)
         )
 
-        next if version.is_current && version.agencies.any? && version.stops.any?
+        next if idempotence_request == true && version.is_current && version.agencies.any? && version.stops.any? && version.stop_times.any?
 
         # Download feed files.
 
@@ -200,12 +201,11 @@ class FeedConsumer
         CSV.foreach(stop_times_txt, :headers => true) do |row|
           stop_time_version = StopTimeVersion.where(
             :version_id => version.id,
-            :identifier => row["stop_id"],
-            :trip_id => row["trip_id"],
+            :trip_identifier => row["trip_id"],
+            :stop_identifier => row["stop_id"],
+            :stop_sequence => row["stop_sequence"],
             :arrival_time => row["arrival_time"],
-            :departure_time => row["departure_time"],
-            :stop_id => row["stop_id"],
-            :stop_sequence => row["stop_sequence"]
+            :departure_time => row["departure_time"]
           ).first_or_create!
           stop_time_version.update_attributes!(
             :stop_headsign => row["stop_headsign"],
