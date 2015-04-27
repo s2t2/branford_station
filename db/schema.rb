@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150423035026) do
+ActiveRecord::Schema.define(version: 20150427014258) do
 
   create_table "agency_versions", force: :cascade do |t|
     t.integer  "version_id", limit: 4,   null: false
@@ -145,5 +145,28 @@ ActiveRecord::Schema.define(version: 20150423035026) do
     t.datetime "created_at",                                               null: false
     t.datetime "updated_at",                                               null: false
   end
+
+  create_table "trip_versions", force: :cascade do |t|
+    t.integer  "version_id",            limit: 4,   null: false
+    t.string   "route_identifier",      limit: 255, null: false
+    t.string   "service_identifier",    limit: 255, null: false
+    t.string   "identifier",            limit: 255, null: false
+    t.string   "headsign",              limit: 255
+    t.string   "short_name",            limit: 255
+    t.integer  "direction_identifier",  limit: 4
+    t.string   "block_identifier",      limit: 255
+    t.string   "shape_identifier",      limit: 255
+    t.integer  "wheelchair_accessible", limit: 4
+    t.integer  "bikes_allowed",         limit: 4
+    t.datetime "created_at",                        null: false
+    t.datetime "updated_at",                        null: false
+  end
+
+  add_index "trip_versions", ["block_identifier"], name: "index_trip_versions_on_block_identifier", using: :btree
+  add_index "trip_versions", ["identifier"], name: "index_trip_versions_on_identifier", using: :btree
+  add_index "trip_versions", ["route_identifier"], name: "index_trip_versions_on_route_identifier", using: :btree
+  add_index "trip_versions", ["service_identifier"], name: "index_trip_versions_on_service_identifier", using: :btree
+  add_index "trip_versions", ["shape_identifier"], name: "index_trip_versions_on_shape_identifier", using: :btree
+  add_index "trip_versions", ["version_id"], name: "index_trip_versions_on_version_id", using: :btree
 
 end

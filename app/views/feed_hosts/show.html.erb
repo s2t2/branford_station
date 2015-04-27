@@ -5,10 +5,10 @@
   </ol>
 <% end %>
 
-<h2><%= "Host Summary"%></h2>
+<!--h2><%#= "Host" %></h2-->
 
 <%= render :partial => "summary_table", :locals => {:hosts => [@host]} %>
 
-<h3><%= "Feeds"%></h3>
+<!--h3><%#= "Feeds"%></h3-->
 
 <%= render :partial => "hosted_feeds/summary_table", :locals => {:feeds => @host.feeds} %>

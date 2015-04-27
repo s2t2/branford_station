@@ -9,5 +9,9 @@ class StopVersion < ActiveRecord::Base
     ##delegate :source_url, :to => :version, :prefix => false #=> stop_version.source_url
     ###delegate :stops, :to => :version, :prefix => false #=> agency_verion.stops
 
-  has_many :stop_times, :class_name => StopTimeVersion, :inverse_of => :stops
+  #has_many :stop_times, :class_name => StopTimeVersion, :foreign_key => "stop_identifier", :inverse_of => :stop
+
+  def stop_times
+    StopTimeVersion.where(:stop_identifier => identifier)
+  end
 end

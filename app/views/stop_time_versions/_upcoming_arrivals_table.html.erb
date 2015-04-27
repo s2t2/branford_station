@@ -1,0 +1,24 @@
+<div class="table-responsive">
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Trip</th>
+        <th>Stop</th>
+        <th>Origin</th>
+        <th>Arrives At</th>
+        <th>Remarks</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% stop_times.each do |stop_time| %>
+      <tr>
+        <td><%= stop_time.trip_identifier %></td>
+        <td><%= stop_time.stop_identifier %></td>
+        <td><%= stop_time.origin_stop_identifier %></td>
+        <td><%= stop_time.arrival_time %></td>
+        <td><%= stop_time.remarks %></td>
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

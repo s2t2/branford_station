@@ -25,7 +25,7 @@ class FeedConsumer
     transit_data_feed_request = options[:transit_data_feed] || false
     data_exchange_request = options[:data_exchange] || false
     source_urls = options[:source_urls] || []
-    idempotence_request = options[:idempotence] || false
+    idempotence_request = true unless options[:idempotence] == false
     talkative = options[:talkative].nil? ? (Rails.env == "development" ? true : false) : options[:talkative]
 
     # Compile source urls.
@@ -178,8 +178,8 @@ class FeedConsumer
             :version_id => version.id,
             :identifier => row["stop_id"],
             :name => row["stop_name"],
-            :latitude => row["stop_lat"],
-            :longitude => row["stop_lon"],
+            :latitude => row["stop_lat"].strip.to_f,
+            :longitude => row["stop_lon"].strip.to_f
           ).first_or_create!
           stop_version.update_attributes!(
             :code => row["stop_code"],
@@ -213,6 +213,29 @@ class FeedConsumer
             :drop_off_type => row["drop_off_type"],
             :shape_dist_traveled => row["shape_dist_traveled"],
             :timepoint => row["timepoint"]
+          )
+        end
+
+        # Load Trips.
+
+        trips_txt = "#{destination_path}/trips.txt"
+        next unless File.exist?(trips_txt)
+
+        CSV.foreach(trips_txt, :headers => true) do |row|
+          trip_version = TripVersion.where(
+            :version_id => version.id,
+            :route_identifier => row["route_id"],
+            :service_identifier => row["service_id"],
+            :identifier => row["trip_id"]
+          ).first_or_create!
+          trip_version.update_attributes!(
+            :headsign => row["trip_headsign"],
+            :short_name => row["trip_short_name"],
+            :direction_identifier => row["direction_id"],
+            :block_identifier => row["block_id"],
+            :shape_identifier => row["shape_id"],
+            :wheelchair_accessible => row["wheelchair_accessible"],
+            :bikes_allowed => row["bikes_allowed"]
           )
         end
 

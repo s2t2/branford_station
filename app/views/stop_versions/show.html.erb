@@ -21,5 +21,8 @@
 
 <h3>Departures</h3>
 
+<%= render :partial => "stop_time_versions/upcoming_departures_table", :locals => {:stop_times => @stop.stop_times.upcoming_departures.limit(100) }%>
 
-<h3>Arrivals</h3>
+<!--h3>Arrivals</h3-->
+
+<%#= render :partial => "stop_time_versions/upcoming_arrivals_table", :locals => {:stop_times => @stop.stop_times.upcoming_arrivals.limit(10) } %>
