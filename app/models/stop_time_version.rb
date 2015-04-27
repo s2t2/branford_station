@@ -5,11 +5,11 @@ class StopTimeVersion < ActiveRecord::Base
   #delegate :destination_stop_identifier, :to => :trip, :prefix => false
 
   def self.upcoming_arrivals
-    order("time_to_sec(stop_time_versions.arrival_time)")
+    where("time_to_sec(stop_time_versions.arrival_time) >= time_to_sec(now())").order("time_to_sec(stop_time_versions.arrival_time)")
   end
 
   def self.upcoming_departures
-    order("time_to_sec(stop_time_versions.departure_time)")
+    where("time_to_sec(stop_time_versions.departure_time) >= time_to_sec(now())").order("time_to_sec(stop_time_versions.departure_time)")
   end
 
   def stop
