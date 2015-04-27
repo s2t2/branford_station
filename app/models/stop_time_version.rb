@@ -5,11 +5,11 @@ class StopTimeVersion < ActiveRecord::Base
   #delegate :destination_stop_identifier, :to => :trip, :prefix => false
 
   def self.upcoming_arrivals
-    order(:arrival_time) # .map{|st| st.serializable_hash.merge({:sort_time => st.arrival_time })}
+    order("time_to_sec(stop_time_versions.arrival_time)")
   end
 
   def self.upcoming_departures
-    order(:departure_time) # .map{|st| st.serializable_hash.merge({:sort_time => st.departure_time })}
+    order("time_to_sec(stop_time_versions.departure_time)")
   end
 
   def stop
@@ -18,6 +18,14 @@ class StopTimeVersion < ActiveRecord::Base
 
   def trip
     TripVersion.where(:identifier => trip_identifier).first
+  end
+
+  def route_identifier
+    trip.route_identifier
+  end
+
+  def service_identifier
+    trip.service_identifier
   end
 
   def destination_stop_identifier
