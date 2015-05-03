@@ -9,6 +9,10 @@ class StopTimeVersion < ActiveRecord::Base
   end
 
   def self.upcoming_departures
+    # get the timezone of the stop. if it is null, get the timezone of the agency.
+    # convert 'America/New_York' to 'Eastern Time (US & Canada)'
+    #stop_time_zone = 'Eastern Time (US & Canada)'
+    #  DateTime.parse(st.arrival_time).in_time_zone(stop_time_zone)
     where("time_to_sec(stop_time_versions.departure_time) >= time_to_sec(now())").order("time_to_sec(stop_time_versions.departure_time)")
   end
 

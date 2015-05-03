@@ -32,13 +32,13 @@ You may also specify one or more feed source urls for ad-hoc consumption.
 Download feed files onto filesystem.
 
 ```` rb
-FeedConsumer.perform(:source_urls => ["http://www.shorelineeast.com/google_transit.zip", "http://web.mta.info/developers/data/mnr/google_transit.zip"])
+FeedConsumer.perform(:source_urls => ["http://www.shorelineeast.com/google_transit.zip", "http://web.mta.info/developers/data/mnr/google_transit.zip","http://www.bart.gov/dev/schedules/google_transit.zip","http://www.caltrain.com/Assets/GTFS/caltrain/GTFS-Caltrain-Devs.zip"])
 ````
 
 Or load files into database.
 
  ```` rb
-FeedConsumer.perform(:source_urls => ["http://www.shorelineeast.com/google_transit.zip", "http://web.mta.info/developers/data/mnr/google_transit.zip"], :load => true)
+FeedConsumer.perform(:load => true, :source_urls => ["http://www.shorelineeast.com/google_transit.zip", "http://web.mta.info/developers/data/mnr/google_transit.zip","http://www.bart.gov/dev/schedules/google_transit.zip","http://www.caltrain.com/Assets/GTFS/caltrain/GTFS-Caltrain-Devs.zip"])
 ````
 
 ### API Endpoints

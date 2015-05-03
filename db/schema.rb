@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150427014258) do
+ActiveRecord::Schema.define(version: 20150502232527) do
 
   create_table "agency_versions", force: :cascade do |t|
     t.integer  "version_id", limit: 4,   null: false
@@ -107,6 +107,25 @@ ActiveRecord::Schema.define(version: 20150427014258) do
   end
 
   add_index "google_transit_data_feed_public_feeds", ["agency_id"], name: "index_google_transit_data_feed_public_feeds_on_agency_id", using: :btree
+
+  create_table "route_versions", force: :cascade do |t|
+    t.integer  "version_id",        limit: 4,   null: false
+    t.string   "identifier",        limit: 255, null: false
+    t.string   "agency_identifier", limit: 255
+    t.string   "short_name",        limit: 255, null: false
+    t.string   "long_name",         limit: 255, null: false
+    t.string   "description",       limit: 255
+    t.integer  "route_type",        limit: 4,   null: false
+    t.string   "url",               limit: 255
+    t.string   "color",             limit: 255
+    t.string   "text_color",        limit: 255
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
+  end
+
+  add_index "route_versions", ["agency_identifier"], name: "index_route_versions_on_agency_identifier", using: :btree
+  add_index "route_versions", ["identifier"], name: "index_route_versions_on_identifier", using: :btree
+  add_index "route_versions", ["version_id"], name: "index_route_versions_on_version_id", using: :btree
 
   create_table "stop_time_versions", force: :cascade do |t|
     t.integer  "version_id",          limit: 4,   null: false

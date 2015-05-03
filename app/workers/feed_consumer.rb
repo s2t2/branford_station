@@ -18,6 +18,7 @@ class FeedConsumer
   # @option options [boolean] :transit_data_feed (false) Whether or not to include sources from the google transit data feed.
   # @option options [boolean] :data_exchange (false) Whether or not to include sources from the data exchange.
   # @option options [boolean] :load (false) Whether or not to load file contents into the database.
+  # @option options [boolean] :idempotence (true) Whether or not to skip feed processing if the feed has already been processed.
   # @option options [boolean] :talkative (true) Whether or not to verbally alert the user when the process is complete.
   #
   def self.perform(options = {})
@@ -119,7 +120,7 @@ class FeedConsumer
           :set_cookie => response_header["set-cookie"].try(:first)
         )
 
-        next if idempotence_request == true && version.is_current && version.agencies.any? && version.stops.any? && version.stop_times.any?
+        next if idempotence_request == true && version.is_current && version.agencies.any? && version.stops.any? && version.stop_times.any? && version.routes.any?
 
         # Download feed files.
 
@@ -236,6 +237,33 @@ class FeedConsumer
             :shape_identifier => row["shape_id"],
             :wheelchair_accessible => row["wheelchair_accessible"],
             :bikes_allowed => row["bikes_allowed"]
+          )
+        end
+
+        # Load Routes.
+
+        routes_txt = "#{destination_path}/routes.txt"
+        next unless File.exist?(routes_txt)
+
+        CSV.foreach(routes_txt, :headers => true) do |row|
+          if row["route_short_name"].nil?
+            # TODO: persist a violation record...
+            row["route_short_name"] = "MISSING. OH NO."
+          end
+          ValidationViolation.create(:type => MissingRoute)
+          route_version = RouteVersion.where(
+            :version_id => version.id,
+            :identifier => row["route_id"],
+            :short_name => row["route_short_name"],
+            :long_name => row["route_long_name"],
+            :route_type => row["route_type"]
+          ).first_or_create!
+          route_version.update_attributes!(
+            :agency_identifier => row["agency_id"],
+            :description => row["route_desc"],
+            :url => row["route_url"],
+            :color => row["route_color"],
+            :text_color => row["route_text_color"]
           )
         end
 
