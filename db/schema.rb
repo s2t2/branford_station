@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150502232527) do
+ActiveRecord::Schema.define(version: 20150503014041) do
 
   create_table "agency_versions", force: :cascade do |t|
     t.integer  "version_id", limit: 4,   null: false
@@ -25,6 +25,37 @@ ActiveRecord::Schema.define(version: 20150502232527) do
     t.datetime "created_at",             null: false
     t.datetime "updated_at",             null: false
   end
+
+  create_table "calendar_date_versions", force: :cascade do |t|
+    t.integer  "version_id",         limit: 4,   null: false
+    t.string   "service_identifier", limit: 255, null: false
+    t.string   "date",               limit: 255, null: false
+    t.integer  "exception_type",     limit: 4,   null: false
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
+  end
+
+  add_index "calendar_date_versions", ["service_identifier"], name: "index_calendar_date_versions_on_service_identifier", using: :btree
+  add_index "calendar_date_versions", ["version_id"], name: "index_calendar_date_versions_on_version_id", using: :btree
+
+  create_table "calendar_versions", force: :cascade do |t|
+    t.integer  "version_id",         limit: 4,   null: false
+    t.string   "service_identifier", limit: 255, null: false
+    t.boolean  "monday",             limit: 1,   null: false
+    t.boolean  "tuesday",            limit: 1,   null: false
+    t.boolean  "wednesday",          limit: 1,   null: false
+    t.boolean  "thursday",           limit: 1,   null: false
+    t.boolean  "friday",             limit: 1,   null: false
+    t.boolean  "saturday",           limit: 1,   null: false
+    t.boolean  "sunday",             limit: 1,   null: false
+    t.string   "start_date",         limit: 255, null: false
+    t.string   "end_date",           limit: 255, null: false
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
+  end
+
+  add_index "calendar_versions", ["service_identifier"], name: "index_calendar_versions_on_service_identifier", using: :btree
+  add_index "calendar_versions", ["version_id"], name: "index_calendar_versions_on_version_id", using: :btree
 
   create_table "data_exchange_agencies", force: :cascade do |t|
     t.string   "dataexchange_id",   limit: 255, null: false

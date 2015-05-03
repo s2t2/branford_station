@@ -1,5 +1,5 @@
 class FeedConsumer
-  FEED_FILE_NAMES = ["agency.txt","stops.txt","routes.txt","trips.txt","stop_times.txt","calendars.txt","calendar_dates.txt","shapes.txt","fare_attributes.txt","fare_rules.txt","frequencies.txt","transfers.txt"]
+  FEED_FILE_NAMES = ["agency.txt","stops.txt","routes.txt","trips.txt","stop_times.txt","calendar.txt","calendar_dates.txt","shapes.txt","fare_attributes.txt","fare_rules.txt","frequencies.txt","transfers.txt","feed_info.txt"]
 
   def self.gtfs_data_directory
     "gtfs_filesystem"
@@ -120,7 +120,7 @@ class FeedConsumer
           :set_cookie => response_header["set-cookie"].try(:first)
         )
 
-        next if idempotence_request == true && version.is_current && version.agencies.any? && version.stops.any? && version.stop_times.any? && version.routes.any?
+        next if idempotence_request == true && version.is_current # && version.agencies.any? && version.stops.any? && version.stop_times.any? && version.routes.any? && version.calendar_dates.any? #... (version.calendar_dates.any? || version.calendars.any?)
 
         # Download feed files.
 
@@ -247,10 +247,9 @@ class FeedConsumer
 
         CSV.foreach(routes_txt, :headers => true) do |row|
           if row["route_short_name"].nil?
-            # TODO: persist a violation record...
+            # TODO: persist a violation record... SpecificationViolation.create(:type => MissingRouteShortName) # associate this with the feed or the version or the individual record?
             row["route_short_name"] = "MISSING. OH NO."
           end
-          ValidationViolation.create(:type => MissingRoute)
           route_version = RouteVersion.where(
             :version_id => version.id,
             :identifier => row["route_id"],
@@ -265,6 +264,41 @@ class FeedConsumer
             :color => row["route_color"],
             :text_color => row["route_text_color"]
           )
+        end
+
+        # Load Calendar
+
+        calendar_txt = "#{destination_path}/calendar.txt"
+        next unless File.exist?(calendar_txt)
+
+        CSV.foreach(calendar_txt, :headers => true) do |row|
+          CalendarVersion.where(
+            :version_id => version.id,
+            :service_identifier => row["service_id"],
+            :monday => row["monday"],
+            :tuesday => row["tuesday"],
+            :wednesday => row["wednesday"],
+            :thursday => row["thursday"],
+            :friday => row["friday"],
+            :saturday => row["saturday"],
+            :sunday => row["sunday"],
+            :start_date => row["start_date"],
+            :end_date => row["end_date"]
+          ).first_or_create!
+        end
+
+        # Load Calendar Dates (optional).
+
+        calendar_dates_txt = "#{destination_path}/calendar_dates.txt"
+        if File.exist?(calendar_dates_txt)
+          CSV.foreach(calendar_dates_txt, :headers => true) do |row|
+            CalendarDateVersion.where(
+              :version_id => version.id,
+              :service_identifier => row["service_id"],
+              :date => row["date"],
+              :exception_type => row["exception_type"]
+            ).first_or_create!
+          end
         end
 
       rescue => e
