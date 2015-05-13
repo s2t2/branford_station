@@ -13,7 +13,8 @@ class StopTimeVersion < ActiveRecord::Base
     # convert 'America/New_York' to 'Eastern Time (US & Canada)'
     #stop_time_zone = 'Eastern Time (US & Canada)'
     #  DateTime.parse(st.arrival_time).in_time_zone(stop_time_zone)
-    where("time_to_sec(stop_time_versions.departure_time) >= time_to_sec(now())").order("time_to_sec(stop_time_versions.departure_time)")
+    where("time_to_sec(stop_time_versions.departure_time) >= time_to_sec(now())")
+    .order("time_to_sec(stop_time_versions.departure_time)")
   end
 
   def stop

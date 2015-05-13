@@ -179,8 +179,8 @@ class FeedConsumer
             :version_id => version.id,
             :identifier => row["stop_id"],
             :name => row["stop_name"],
-            :latitude => row["stop_lat"].strip.to_f,
-            :longitude => row["stop_lon"].strip.to_f
+            :latitude => row["stop_lat"].strip.to_f.round(6),
+            :longitude => row["stop_lon"].strip.to_f.round(6)
           ).first_or_create!
           stop_version.update_attributes!(
             :code => row["stop_code"],
