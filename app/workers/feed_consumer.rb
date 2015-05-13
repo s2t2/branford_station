@@ -26,7 +26,7 @@ class FeedConsumer
     transit_data_feed_request = options[:transit_data_feed] || false
     data_exchange_request = options[:data_exchange] || false
     source_urls = options[:source_urls] || []
-    idempotence_request = true unless options[:idempotence] == false
+    idempotence_request = false unless options[:idempotence] == true
     talkative = options[:talkative].nil? ? (Rails.env == "development" ? true : false) : options[:talkative]
 
     # Compile source urls.
