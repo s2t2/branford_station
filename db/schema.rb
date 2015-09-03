@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150316003530) do
+ActiveRecord::Schema.define(version: 20150503014041) do
 
   create_table "agency_versions", force: :cascade do |t|
     t.integer  "version_id", limit: 4,   null: false
@@ -25,6 +25,37 @@ ActiveRecord::Schema.define(version: 20150316003530) do
     t.datetime "created_at",             null: false
     t.datetime "updated_at",             null: false
   end
+
+  create_table "calendar_date_versions", force: :cascade do |t|
+    t.integer  "version_id",         limit: 4,   null: false
+    t.string   "service_identifier", limit: 255, null: false
+    t.string   "date",               limit: 255, null: false
+    t.integer  "exception_type",     limit: 4,   null: false
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
+  end
+
+  add_index "calendar_date_versions", ["service_identifier"], name: "index_calendar_date_versions_on_service_identifier", using: :btree
+  add_index "calendar_date_versions", ["version_id"], name: "index_calendar_date_versions_on_version_id", using: :btree
+
+  create_table "calendar_versions", force: :cascade do |t|
+    t.integer  "version_id",         limit: 4,   null: false
+    t.string   "service_identifier", limit: 255, null: false
+    t.boolean  "monday",             limit: 1,   null: false
+    t.boolean  "tuesday",            limit: 1,   null: false
+    t.boolean  "wednesday",          limit: 1,   null: false
+    t.boolean  "thursday",           limit: 1,   null: false
+    t.boolean  "friday",             limit: 1,   null: false
+    t.boolean  "saturday",           limit: 1,   null: false
+    t.boolean  "sunday",             limit: 1,   null: false
+    t.string   "start_date",         limit: 255, null: false
+    t.string   "end_date",           limit: 255, null: false
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
+  end
+
+  add_index "calendar_versions", ["service_identifier"], name: "index_calendar_versions_on_service_identifier", using: :btree
+  add_index "calendar_versions", ["version_id"], name: "index_calendar_versions_on_version_id", using: :btree
 
   create_table "data_exchange_agencies", force: :cascade do |t|
     t.string   "dataexchange_id",   limit: 255, null: false
@@ -107,5 +138,85 @@ ActiveRecord::Schema.define(version: 20150316003530) do
   end
 
   add_index "google_transit_data_feed_public_feeds", ["agency_id"], name: "index_google_transit_data_feed_public_feeds_on_agency_id", using: :btree
+
+  create_table "route_versions", force: :cascade do |t|
+    t.integer  "version_id",        limit: 4,   null: false
+    t.string   "identifier",        limit: 255, null: false
+    t.string   "agency_identifier", limit: 255
+    t.string   "short_name",        limit: 255, null: false
+    t.string   "long_name",         limit: 255, null: false
+    t.string   "description",       limit: 255
+    t.integer  "route_type",        limit: 4,   null: false
+    t.string   "url",               limit: 255
+    t.string   "color",             limit: 255
+    t.string   "text_color",        limit: 255
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
+  end
+
+  add_index "route_versions", ["agency_identifier"], name: "index_route_versions_on_agency_identifier", using: :btree
+  add_index "route_versions", ["identifier"], name: "index_route_versions_on_identifier", using: :btree
+  add_index "route_versions", ["version_id"], name: "index_route_versions_on_version_id", using: :btree
+
+  create_table "stop_time_versions", force: :cascade do |t|
+    t.integer  "version_id",          limit: 4,   null: false
+    t.string   "trip_identifier",     limit: 255, null: false
+    t.string   "arrival_time",        limit: 255, null: false
+    t.string   "departure_time",      limit: 255, null: false
+    t.string   "stop_identifier",     limit: 255, null: false
+    t.integer  "stop_sequence",       limit: 4,   null: false
+    t.string   "stop_headsign",       limit: 255
+    t.integer  "pickup_type",         limit: 4
+    t.integer  "drop_off_type",       limit: 4
+    t.string   "shape_dist_traveled", limit: 255
+    t.integer  "timepoint",           limit: 4
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
+  end
+
+  add_index "stop_time_versions", ["stop_identifier"], name: "index_stop_time_versions_on_stop_identifier", using: :btree
+  add_index "stop_time_versions", ["trip_identifier"], name: "index_stop_time_versions_on_trip_identifier", using: :btree
+  add_index "stop_time_versions", ["version_id"], name: "index_stop_time_versions_on_version_id", using: :btree
+
+  create_table "stop_versions", force: :cascade do |t|
+    t.integer  "version_id",          limit: 4,                            null: false
+    t.string   "identifier",          limit: 255,                          null: false
+    t.string   "code",                limit: 255
+    t.string   "name",                limit: 255,                          null: false
+    t.string   "description",         limit: 255
+    t.decimal  "latitude",                        precision: 10, scale: 8, null: false
+    t.decimal  "longitude",                       precision: 11, scale: 8, null: false
+    t.string   "zone_identifier",     limit: 255
+    t.string   "url",                 limit: 255
+    t.string   "location_type",       limit: 255
+    t.string   "parent_station",      limit: 255
+    t.string   "timezone",            limit: 255
+    t.string   "wheelchair_boarding", limit: 255
+    t.datetime "created_at",                                               null: false
+    t.datetime "updated_at",                                               null: false
+  end
+
+  create_table "trip_versions", force: :cascade do |t|
+    t.integer  "version_id",            limit: 4,   null: false
+    t.string   "route_identifier",      limit: 255, null: false
+    t.string   "service_identifier",    limit: 255, null: false
+    t.string   "identifier",            limit: 255, null: false
+    t.string   "headsign",              limit: 255
+    t.string   "short_name",            limit: 255
+    t.integer  "direction_identifier",  limit: 4
+    t.string   "block_identifier",      limit: 255
+    t.string   "shape_identifier",      limit: 255
+    t.integer  "wheelchair_accessible", limit: 4
+    t.integer  "bikes_allowed",         limit: 4
+    t.datetime "created_at",                        null: false
+    t.datetime "updated_at",                        null: false
+  end
+
+  add_index "trip_versions", ["block_identifier"], name: "index_trip_versions_on_block_identifier", using: :btree
+  add_index "trip_versions", ["identifier"], name: "index_trip_versions_on_identifier", using: :btree
+  add_index "trip_versions", ["route_identifier"], name: "index_trip_versions_on_route_identifier", using: :btree
+  add_index "trip_versions", ["service_identifier"], name: "index_trip_versions_on_service_identifier", using: :btree
+  add_index "trip_versions", ["shape_identifier"], name: "index_trip_versions_on_shape_identifier", using: :btree
+  add_index "trip_versions", ["version_id"], name: "index_trip_versions_on_version_id", using: :btree
 
 end

@@ -1,5 +1,5 @@
 class FeedConsumer
-  FEED_FILE_NAMES = ["agency.txt","stops.txt","routes.txt","trips.txt","stop_times.txt","calendars.txt","calendar_dates.txt","shapes.txt","fare_attributes.txt","fare_rules.txt","frequencies.txt","transfers.txt"]
+  FEED_FILE_NAMES = ["agency.txt","stops.txt","routes.txt","trips.txt","stop_times.txt","calendar.txt","calendar_dates.txt","shapes.txt","fare_attributes.txt","fare_rules.txt","frequencies.txt","transfers.txt","feed_info.txt"]
 
   def self.gtfs_data_directory
     "gtfs_filesystem"
@@ -18,6 +18,7 @@ class FeedConsumer
   # @option options [boolean] :transit_data_feed (false) Whether or not to include sources from the google transit data feed.
   # @option options [boolean] :data_exchange (false) Whether or not to include sources from the data exchange.
   # @option options [boolean] :load (false) Whether or not to load file contents into the database.
+  # @option options [boolean] :idempotence (true) Whether or not to skip feed processing if the feed has already been processed.
   # @option options [boolean] :talkative (true) Whether or not to verbally alert the user when the process is complete.
   #
   def self.perform(options = {})
@@ -25,6 +26,7 @@ class FeedConsumer
     transit_data_feed_request = options[:transit_data_feed] || false
     data_exchange_request = options[:data_exchange] || false
     source_urls = options[:source_urls] || []
+    idempotence_request = false unless options[:idempotence] == true
     talkative = options[:talkative].nil? ? (Rails.env == "development" ? true : false) : options[:talkative]
 
     # Compile source urls.
@@ -64,6 +66,38 @@ class FeedConsumer
         next unless response_header
         last_modified_at = response_header["last-modified"].try(:first).try(:to_datetime)
 
+        # Handle moved/redirected source. TODO: refactor this into a shared method...
+
+        if last_modified_at.nil? && response_head.class == Net::HTTPMovedPermanently && response_header["location"].present?
+
+          # Parse source url.
+
+          uri = URI.parse(response_header["location"].first)
+          feed_host_name = uri.host
+          feed_name = uri.path.split("/").last
+          puts uri
+
+          next unless feed_host_name && feed_name
+          feed_host = FeedHost.where(:name => feed_host_name).first_or_create # todo maybe store the feed_host_name as feed.url instead of feed_name as feed.name ...
+          feed = Feed.where(
+            :source_url => source_url,
+            :host_id => feed_host.id
+          ).first_or_create!
+          feed.update_attributes!(:name => feed_name)
+
+          # Request information about the latest source version.
+
+          next unless uri.scheme == "http"
+          response = nil
+          http = Net::HTTP.start(uri.host)
+          response_head = http.head(uri.path)
+          response_header = response_head.to_hash
+          pp response_header
+
+          next unless response_header
+          last_modified_at = response_header["last-modified"].try(:first).try(:to_datetime)
+        end
+
         next unless last_modified_at && last_modified_at.is_a?(DateTime)
         version = FeedVersion.where(
           :feed_id => feed.id,
@@ -85,6 +119,8 @@ class FeedConsumer
           :x_powered_by => response_header["x-powered-by"].try(:first),
           :set_cookie => response_header["set-cookie"].try(:first)
         )
+
+        next if idempotence_request == true && version.is_current # && version.agencies.any? && version.stops.any? && version.stop_times.any? && version.routes.any? && version.calendar_dates.any? #... (version.calendar_dates.any? || version.calendars.any?)
 
         # Download feed files.
 
@@ -131,6 +167,138 @@ class FeedConsumer
             :phone => row["agency_phone"],
             :fare_url => row["agency_fare_url"]
           )
+        end
+
+        # Load Stops.
+
+        stops_txt = "#{destination_path}/stops.txt"
+        next unless File.exist?(stops_txt)
+
+        CSV.foreach(stops_txt, :headers => true) do |row|
+          stop_version = StopVersion.where(
+            :version_id => version.id,
+            :identifier => row["stop_id"],
+            :name => row["stop_name"],
+            :latitude => row["stop_lat"].strip.to_f.round(6),
+            :longitude => row["stop_lon"].strip.to_f.round(6)
+          ).first_or_create!
+          stop_version.update_attributes!(
+            :code => row["stop_code"],
+            :description => row["stop_desc"],
+            :zone_identifier => row["zone_id"],
+            :url => row["stop_url"],
+            :location_type => row["location_type"],
+            :parent_station => row["parent_station"],
+            :timezone => row["stop_timezone"],
+            :wheelchair_boarding => row["wheelchair_boarding"]
+          )
+        end
+
+        # Load StopTimes.
+
+        stop_times_txt = "#{destination_path}/stop_times.txt"
+        next unless File.exist?(stop_times_txt)
+
+        CSV.foreach(stop_times_txt, :headers => true) do |row|
+          stop_time_version = StopTimeVersion.where(
+            :version_id => version.id,
+            :trip_identifier => row["trip_id"],
+            :stop_identifier => row["stop_id"],
+            :stop_sequence => row["stop_sequence"],
+            :arrival_time => row["arrival_time"],
+            :departure_time => row["departure_time"]
+          ).first_or_create!
+          stop_time_version.update_attributes!(
+            :stop_headsign => row["stop_headsign"],
+            :pickup_type => row["pickup_type"],
+            :drop_off_type => row["drop_off_type"],
+            :shape_dist_traveled => row["shape_dist_traveled"],
+            :timepoint => row["timepoint"]
+          )
+        end
+
+        # Load Trips.
+
+        trips_txt = "#{destination_path}/trips.txt"
+        next unless File.exist?(trips_txt)
+
+        CSV.foreach(trips_txt, :headers => true) do |row|
+          trip_version = TripVersion.where(
+            :version_id => version.id,
+            :route_identifier => row["route_id"],
+            :service_identifier => row["service_id"],
+            :identifier => row["trip_id"]
+          ).first_or_create!
+          trip_version.update_attributes!(
+            :headsign => row["trip_headsign"],
+            :short_name => row["trip_short_name"],
+            :direction_identifier => row["direction_id"],
+            :block_identifier => row["block_id"],
+            :shape_identifier => row["shape_id"],
+            :wheelchair_accessible => row["wheelchair_accessible"],
+            :bikes_allowed => row["bikes_allowed"]
+          )
+        end
+
+        # Load Routes.
+
+        routes_txt = "#{destination_path}/routes.txt"
+        next unless File.exist?(routes_txt)
+
+        CSV.foreach(routes_txt, :headers => true) do |row|
+          if row["route_short_name"].nil?
+            # TODO: persist a violation record... SpecificationViolation.create(:type => MissingRouteShortName) # associate this with the feed or the version or the individual record?
+            row["route_short_name"] = "MISSING. OH NO."
+          end
+          route_version = RouteVersion.where(
+            :version_id => version.id,
+            :identifier => row["route_id"],
+            :short_name => row["route_short_name"],
+            :long_name => row["route_long_name"],
+            :route_type => row["route_type"]
+          ).first_or_create!
+          route_version.update_attributes!(
+            :agency_identifier => row["agency_id"],
+            :description => row["route_desc"],
+            :url => row["route_url"],
+            :color => row["route_color"],
+            :text_color => row["route_text_color"]
+          )
+        end
+
+        # Load Calendar
+
+        calendar_txt = "#{destination_path}/calendar.txt"
+        next unless File.exist?(calendar_txt)
+
+        CSV.foreach(calendar_txt, :headers => true) do |row|
+          CalendarVersion.where(
+            :version_id => version.id,
+            :service_identifier => row["service_id"],
+            :monday => row["monday"],
+            :tuesday => row["tuesday"],
+            :wednesday => row["wednesday"],
+            :thursday => row["thursday"],
+            :friday => row["friday"],
+            :saturday => row["saturday"],
+            :sunday => row["sunday"],
+            :start_date => row["start_date"],
+            :end_date => row["end_date"]
+          ).first_or_create!
+        end
+
+        # Load Calendar Dates (optional).
+
+        calendar_dates_txt = "#{destination_path}/calendar_dates.txt"
+        if File.exist?(calendar_dates_txt)
+          CSV.foreach(calendar_dates_txt, :headers => true) do |row|
+            CalendarDateVersion.where(
+              :version_id => version.id,
+              :service_identifier => row["service_id"],
+              :date => row["date"],
+              :exception_type => row["exception_type"]
+            ).first_or_create!
+          end
         end
 
       rescue => e

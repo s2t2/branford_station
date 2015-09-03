@@ -5,8 +5,7 @@ Rails.application.routes.draw do
   get 'hosts' => 'feed_hosts#index', :as => 'hosts'
   get 'hosts/:id' => 'feed_hosts#show', :as => 'host'
 
-  #get 'feeds' => 'feeds#index', :as => 'feeds'
-  #get 'feeds/:id' => 'feeds#show', :as => 'feed'
+  resources :feeds, :except => [:edit]
 
   get 'hosts/:host_id/feeds' => 'hosted_feeds#index', :as => 'hosted_feeds'
   get 'hosts/:host_id/feeds/:feed_id' => 'hosted_feeds#show', :as => 'hosted_feed'
@@ -19,12 +18,15 @@ Rails.application.routes.draw do
   get 'hosts/:host_id/feeds/:feed_id/versions/:version_id/agencies' => 'agency_versions#index', :as => 'agency_versions'
   get 'hosts/:host_id/feeds/:feed_id/versions/:version_id/agencies/:agency_id' => 'agency_versions#show', :as => 'agency_version'
 
+  get 'hosts/:host_id/feeds/:feed_id/versions/:version_id/stops' => 'stop_versions#index', :as => 'stop_versions'
+  get 'hosts/:host_id/feeds/:feed_id/versions/:version_id/stops/:stop_id' => 'stop_versions#show', :as => 'stop_version'
+
   get 'agencies' => 'agencies#index', :as => 'agencies'
   #get 'agencies/:agency_abbreviation/' => 'agencies#show', :as => 'agency'
   get 'agencies/:agency_id/' => 'agencies#show', :as => 'agency'
 
   #get 'agencies/:agency_abbreviation/stations/:station_abbreviation'  => 'stations#show', :as => 'station'
-  get 'agencies/:agency_id/stations/:station_id'  => 'stations#show', :as => 'station'
+  #get 'agencies/:agency_id/stations/:station_id'  => 'stations#show', :as => 'station'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
@@ -81,5 +83,5 @@ Rails.application.routes.draw do
   #     resources :products
   #   end
 
-  root 'feed_hosts#index'
+  root 'feeds#index'
 end

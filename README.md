@@ -38,7 +38,7 @@ FeedConsumer.perform(:source_urls => ["http://www.shorelineeast.com/google_trans
 Or load files into database.
 
  ```` rb
-FeedConsumer.perform(:source_urls => ["http://www.shorelineeast.com/google_transit.zip", "http://web.mta.info/developers/data/mnr/google_transit.zip"], :load => true)
+FeedConsumer.perform(:load => true, :source_urls => ["http://www.shorelineeast.com/google_transit.zip", "http://web.mta.info/developers/data/mnr/google_transit.zip"])
 ````
 
 ### API Endpoints
@@ -60,7 +60,39 @@ To deliver a new feature, [fork the repo](https://github.com/s2t2/branford_stati
 ### Development Environment Setup
 
 Install dependencies for a Ruby on Rails application.
+ + ruby (via rbenv)
+ + bundler
+ + rails
+ + mysql (or postgres, etc. according to database.yml)
 
-### Production Environment Considerations
+Obtain source code.
+
+```` sh
+git clone git@github.com:s2t2/branford_station.git
+cd branford_station
+````
+
+Set-up the database.
+
+```` sh
+bundle exec rake db:create
+bundle exec rake db:migrate
+````
+
+Consume a few gtfs feeds.
+
+```` rb
+FeedConsumer.perform(:source_urls => ["http://www.shorelineeast.com/google_transit.zip", "http://web.mta.info/developers/data/mnr/google_transit.zip"], :load => true)
+````
+
+Start a web server.
+
+```` sh
+rails server
+````
+
+View in browser at [localhost:3000].
+
+### Production Environment Setup
 
 Thanks to *HOSTING ORGANIZATION HERE* for hosting this application in production.

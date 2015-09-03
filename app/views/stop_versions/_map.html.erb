@@ -1,0 +1,81 @@
+<% content_for(:css_head) do %>
+  <link href='https://api.tiles.mapbox.com/mapbox.js/v2.1.4/mapbox.css' rel='stylesheet' />
+  <script src='https://api.tiles.mapbox.com/mapbox.js/v2.1.4/mapbox.js'></script>
+<% end %>
+
+<div id="map-container" style="height:35em; width:100%; border:1px solid #000; margin-bottom:20px;"></div>
+
+<% content_for(:js_footer) do %>
+<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+<script type="text/javascript">
+
+	// Initialize new map.
+
+    L.mapbox.accessToken = "pk.eyJ1IjoiczJ0MiIsImEiOiJEN09jR2JNIn0.D-Q6idg2D7ZtTxkCRvaeGQ"
+
+    var map = L.mapbox.map('map-container', 'examples.map-i86nkdio')
+        .setView([37.7846897817763, -122.41198539733887], 14)
+
+    map.scrollWheelZoom.disable();
+
+    // Set marker icon sytle.
+
+    var marker_icon_options = {
+        'marker-size': 'large',
+        'marker-symbol': 'rail-metro',
+        'marker-color': '#fa0'
+    }
+
+    var marker_icon = L.mapbox.marker.icon(marker_icon_options)
+
+    var marker_options = {
+        icon: marker_icon
+    }
+
+    // Get request url based on the page. If on a show page, request the show page json. If on an index page, request the index page json.
+
+    if(window.location.href.indexOf("stops/") > -1){ // stops show page
+        var request_url = window.location.href + ".json"
+    } else if(window.location.href.indexOf("stops") > -1) { // stops index page
+        var request_url = window.location.href + ".json"
+    } else if(window.location.href.indexOf("stops") == -1) { // perhaps a version show page...
+        var request_url = window.location.href + "/stops.json"
+    }
+
+    console.log("REQUEST URL", request_url)
+
+    d3.json(request_url, function(stations){
+        console.log(stations[0])
+
+        bounds = []
+
+        // Convert a single station object into an array if necessary.
+
+        if(stations.length == undefined){
+            stations = [stations]
+        }
+
+        // Map all the stations.
+
+        stations.forEach(function(d){
+
+            var marker_popup = '<strong>' + d.name + '</strong> '
+
+            var marker_coordinates = [d.latitude, d.longitude]
+
+            var marker = L.marker(marker_coordinates, marker_options)
+
+            marker.bindPopup(marker_popup)
+
+            marker.addTo(map)
+
+            bounds.push(marker_coordinates)
+
+        });
+
+        map.fitBounds(bounds)
+
+    });
+
+</script>
+<% end %>

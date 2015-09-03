@@ -2,25 +2,40 @@
   <table class="table table-bordered">
     <thead>
       <tr>
-        <th>Host Name</th>
-        <th>Feed Name</th>
-        <th>Feed Source Url</th>
-        <th>Feed Last Modified At</th>
-        <th>Feed Last Checked At</th>
-        <!--th>Feed Agency Names</th-->
+        <th>Host</th>
+        <th>Feed</th>
+        <th>Last Checked</th>
+        <th>Check</th>
+        <th>Last Modified</th>
+        <th>Download</th>
       </tr>
     </thead>
     <tbody>
       <% feeds.each do |feed| %>
       <tr>
         <td><%= link_to feed.host_name, host_path(feed.host) %></td>
-        <td><%= link_to feed.name, feed_path(feed) %></td>
-        <td><%= link_to feed.source_url, :title => "Download hosted GTFS data from #{feed.source_url}" do %><i class="fa fa-cloud-download"></i><% end %></td>
-        <td><%= feed.last_modified_at ? "#{time_ago_in_words(feed.last_modified_at)} ago" : "N/A" %></td>
-        <td><%= feed.last_checked_at ? "#{time_ago_in_words(feed.last_checked_at)} ago" : "N/A" %></td>
-        <!--td><%#= feed.agency_names %></td-->
+        <td><%= link_to feed.name, hosted_feed_path(:host_id => feed.host_id, :feed_id => feed.id) %></td>
+        <td>
+          <span class="label label-<%= bootstrap_label_class(feed.is_current) %>">
+            <%= feed.last_checked_at ? "#{time_ago_in_words(feed.last_checked_at)} ago" : "N/A" %>
+          </span>
+        </td>
+        <td><%= link_to hosted_feed_check_path(:host_id => feed.host_id, :feed_id => feed.id), :class => "btn btn-default btn-sm feed-check-requestor", :title => "Check feed for updates." do %><i class="fa fa-refresh <%= "feed-#{feed.id}-spinnable-icon" %> spinnable-icon"></i><% end %></td>
+        <td><%= feed.last_modified_at ? (link_to "#{time_ago_in_words(feed.last_modified_at)} ago", hosted_feed_version_path(:host_id => feed.host_id, :feed_id => feed.id, :version_id => feed.latest_version_id)) : "N/A" %></td>
+        <td><%= link_to feed.source_url, :id => "feed-download-requestor", :class => 'btn btn-default btn-sm', :title => "Download feed from source." do %><i class="fa fa-cloud-download"></i><% end %></td>
       </tr>
       <% end %>
     </tbody>
   </table>
 </div>
+
+<% content_for(:js_footer) do %>
+<script type="text/javascript">
+
+   $(".feed-check-requestor").click(function(){
+      this.firstElementChild.classList.add("fa-spin")
+      alert("Please be patient as the feed check can take a few moments. You will be redirected when the process is complete.");
+    })
+
+</script>
+<% end %>

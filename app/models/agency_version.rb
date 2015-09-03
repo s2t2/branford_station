@@ -7,4 +7,5 @@ class AgencyVersion < ActiveRecord::Base
     delegate :host_name, :to => :version, :prefix => false #=> agency_version.host_name
     delegate :host_url, :to => :version, :prefix => false #=> agency_version.host_url
     delegate :source_url, :to => :version, :prefix => false #=> agency_version.source_url
+    ###delegate :stops, :to => :version, :prefix => false #=> agency_verion.stops
 end

@@ -1,0 +1,36 @@
+<div class="table-responsive">
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Stop Identifier</th>
+        <!--th>Stop Code</th-->
+        <th>Stop Name</th>
+        <!--th>Stop Description</th-->
+        <th>Stop Url</th>
+        <th>Stop Coordinates</th>
+        <!--th>Stop Zone</th-->
+        <!--th>Stop Location Type</th-->
+        <!--th>Stop Parent Station</th-->
+        <!--th>Stop Timezone</th-->
+        <!--th>Stop Wheelchair Boarding</th-->
+      </tr>
+    </thead>
+    <tbody>
+      <% stops.each do |stop| %>
+      <tr>
+        <td><%= stop.identifier %></td>
+        <!--td><%#= stop.code %></td-->
+        <td><%= link_to stop.name, stop_version_path(:stop_id => stop.id) %></td>
+        <!--td><%#= stop.description %></td-->
+        <td><%= link_to stop.url, :title => "Visit stop page at #{stop.url}" do %><%= truncate(stop.url, :length => 75) %> &nbsp; <i class="fa fa-external-link"></i><% end %></td>
+        <td><%= "#{stop.latitude}, #{stop.longitude}" %></td>
+        <!--td><%#= stop.zone_identifier %></td-->
+        <!--td><%#= stop.location_type %></td-->
+        <!--td><%#= stop.parent_station %></td-->
+        <!--td><%#= stop.timezone %></td-->
+        <!--td><%#= stop.wheelchair_boarding %></td-->
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

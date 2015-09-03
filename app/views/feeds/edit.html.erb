@@ -1,0 +1,11 @@
+<% content_for(:breadcrumb_nav) do %>
+  <ol class="breadcrumb">
+    <li><%= link_to "Feeds", feeds_path %></li>
+    <li><%= link_to @feed.source_url, feed_path(@feed) %></li>
+    <li class="active"><%= link_to "edit", edit_feed_path(@feed) %></li>
+  </ol>
+<% end %>
+
+<h2>Editing Feed</h2>
+
+<%= render 'form' %>

@@ -11,10 +11,26 @@
 
 <h2><%= "GTFS Feed Version Summary"%></h2>
 
-<%= render :partial => "summary_table", :locals => {:versions => [@version]} %>
+<%= render :partial => "summary_table", :locals => {:versions => [@version] } %>
 
-<h3><%= "Contents"%></h3>
+<h3>Contents</h3>
 
-<h4><%= "Agencies"%></h4>
+<h4>Agencies</h4>
 
-<%= render :partial => "agency_versions/summary_table", :locals => {:agencies => @version.agencies} %>
+<%= render :partial => "agency_versions/summary_table", :locals => {:agencies => @version.agencies } %>
+
+<h4>Stops</h4>
+
+<%= render :partial => "stop_versions/map" %>
+
+<%= render :partial => "stop_versions/summary_table", :locals => {:stops => @version.stops } %>
+
+<h4>Stop Times</h4>
+
+<h5>Upcoming Departures</h5>
+
+<%= render :partial => "stop_time_versions/upcoming_departures_table", :locals => {:stop_times => @version.stop_times.merge(StopTimeVersion.upcoming_departures).limit(10) } %>
+
+<h5>Upcoming Arrivals</h5>
+
+<%= render :partial => "stop_time_versions/upcoming_arrivals_table", :locals => {:stop_times => @version.stop_times.merge(StopTimeVersion.upcoming_arrivals).limit(10) } %>
